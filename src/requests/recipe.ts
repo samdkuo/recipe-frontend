@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const serverURL = "http://localhost:3000/api/v1";
 
 export const getRecipeURL = (entry_id = null) => {
@@ -81,12 +80,36 @@ export const postRecipe = (entry: any) => {
         description: entry.description,
         instruction: entry.instruction,
         cooktime: entry.cooktime,
+        Label: entry.Label
       },
       { headers: { "Jwt-Token": "" } }
     )
     .then((response) => {
       console.log("successful post");
-      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const postIngredient = (entry: any, rid:number) => {
+  console.log(entry);
+  const api = serverURL;
+  const recipe = `${api}/ingredient/recipeID/${rid}`;
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        name: entry.name,
+        unit: entry.unit,
+        description: entry.description,
+        quantity: entry.quantity
+      },
+      { headers: { "Jwt-Token": "" } }
+    )
+    .then((response) => {
+      console.log("successful ingredient post");
       return response.data;
     })
     .catch((error) => {
@@ -109,15 +132,30 @@ export const deleteRecipe = (recipeId: number) => {
     });
 };
 
+export const deleteIngrediant = (recipeId: number, ingredientname: string) => {
+  const api = serverURL;
+  const recipe = `${api}/ingredient/recipeID/${recipeId}/ingredientID/${ingredientname}`;
+
+  return axios
+    .delete(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful delete");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
 export const updateRecipe = (entry: any, recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe`;
   return axios
     .put(`${recipe}/${recipeId}`, {
-      name: "Updatetest",
-      description: "updatedes",
+      name: entry.name,
+      description: entry.description,
       instruction: entry.instruction,
-      cooktime: "10",
+      cooktime: entry.cooktime,
     },
      { headers: { "Jwt-Token": "" } })
     .then((response) => {
@@ -129,16 +167,32 @@ export const updateRecipe = (entry: any, recipeId: number) => {
     });
 };
 
-export const getmaxId = (entry_id: number | null = null) => {
+export const fetchRecipeFromIngredient = (IngName: string) => {
   const api = serverURL;
-  const recipe = `${api}/recipe/max/id`;
+  const recipe = `${api}/ingredient/filterrecipe/ingredientID`;
   return axios
-    .get(getRecipeURL(), { headers: { "Jwt-Token": "" } })
+    .get(`${recipe}/${IngName}`, { headers: { "Jwt-Token": "" } })
     .then((response) => {
-      console.log("successful get id");
+      console.log("successful recipe from ingredient search");
+      console.log(response.data)
       return response.data;
     })
     .catch((error) => {
       console.log("error: ", error);
     });
-  };
+};
+
+
+export const SearchRecipeEntries = (Rname: string) => {
+  const api = serverURL;
+  const recipe = `${api}/recipe/search`;
+  return axios
+    .get(`${recipe}/${Rname}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful recipe name search");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};

@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import { Link as ReactLink } from "react-router-dom";
 
 import { dimensions } from "./types";
@@ -17,7 +17,7 @@ const Navigation = ({ routes }: { routes: any }) => {
     >
       <ReactLink to="/">
         <img
-          src= "images/fried-egg.png"
+          src="images/fried-egg.png"
           style={{ width: 40, height: 40 }}
         />
       </ReactLink>
