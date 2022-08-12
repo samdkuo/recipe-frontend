@@ -3,19 +3,15 @@ import { useForm } from "react-hook-form";
 import { Formik } from "formik";
 import { colors } from "../theme/colors";
 import { postIngredient, postRecipe, updateRecipe } from "../requests/recipe";
-import { Toolbar, TextField, Button, MenuItem, styled, MenuProps, Menu, alpha, Divider } from "@mui/material"
+import { Toolbar, TextField, Button, MenuItem, styled, MenuProps, Menu, alpha, Divider, Typography } from "@mui/material"
 import './styles.css'
 import axios from 'axios';
 
-interface RecipeFormProps { addRecipe: (data: any) => void, updateRstate: (data: any, rid: number) => void, update: boolean, rid: number, name: any, description: any, instruction: any, cooktime: any }
+interface RecipeFormProps { addRecipe: (data: any) => void, updateRstate: (data: any, rid: number) => void, update: boolean, rid: number, name: any, description: any, instruction: any, cooktime: any, handleIngredientSubmit: (data: any) => void }
 
-function IngredientInput({ rid }: RecipeFormProps) {
+function IngredientInput({ rid, handleIngredientSubmit }: RecipeFormProps) {
   const handlingSubmit = (values: Ingredient) => {
-    console.log(values.name);
-    console.log(values.quantity);
-    console.log(values.description);
-    console.log(rid);
-    postIngredient(values, rid);
+    handleIngredientSubmit(values)
   };
   return (
     <div>
@@ -97,13 +93,6 @@ interface Ingredient {
   units: string;
 }
 
-interface Recipe {
-  name: string;
-  description: string;
-  ingredients: Array<Ingredient>;
-  instruction: string;
-}
-
 export function RecipeForm({ addRecipe, updateRstate, name, update, rid, description, instruction, cooktime }: RecipeFormProps) {
   const [ingredientsList, setIngredientsList] = React.useState<
     Array<Ingredient>
@@ -112,6 +101,7 @@ export function RecipeForm({ addRecipe, updateRstate, name, update, rid, descrip
   const handleIngredientSubmit = useCallback(
     (values: Ingredient) => {
       setIngredientsList([...ingredientsList, values]);
+      console.log(ingredientsList);
     },
     [ingredientsList]
   );
@@ -139,10 +129,12 @@ export function RecipeForm({ addRecipe, updateRstate, name, update, rid, descrip
         const recipe = { ...data, id: response };
         console.log(recipe)
         addRecipe(recipe);
+        ingredientsList.map(ingridient => { postIngredient(ingridient, response); console.log("ingredient posted in form") })
       })
     } else {
       console.log(update)
       console.log(data)
+      ingredientsList.map(ingridient => { postIngredient(ingridient, rid); console.log("ingredient posted in form") })
       updateRstate(data, rid);
       updateRecipe(data, rid)
     }
@@ -181,7 +173,14 @@ export function RecipeForm({ addRecipe, updateRstate, name, update, rid, descrip
       </div>
       {<IngredientInput rid={rid} addRecipe={function (data: any): void {
       }} updateRstate={function (data: any, rid: number): void {
-      }} update={false} name={undefined} description={undefined} instruction={undefined} cooktime={undefined} />}
+      }} update={false} name={undefined} description={undefined} instruction={undefined} cooktime={undefined} handleIngredientSubmit={handleIngredientSubmit} />}
+      <ul>
+        {ingredientsList.map(({ name, quantity }) => (
+          <Typography id="instruction" sx={{ mt: 2 }}>
+            {name}: {quantity}
+          </Typography>
+        ))}
+      </ul>
       <div style={{ marginBottom: 10 }}>
         <label>Instruction</label>
         <TextField style={{

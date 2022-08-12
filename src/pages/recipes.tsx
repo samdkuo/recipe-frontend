@@ -138,7 +138,9 @@ const Home = () => {
       >
         <Box className="modalBox" sx={{ position: "absolute", overflowY: "scroll", maxHeight: "115%", marginLeft: "10%", width: "80%", marginTop: -13 }}>
           <RecipeForm addRecipe={addRecipe} updateRstate={updateRstate} update={false} rid={0} name={""}
-            description={""} instruction={""} cooktime={""} />
+            description={""} instruction={""} cooktime={""} handleIngredientSubmit={function (data: any): void {
+              throw new Error("Function not implemented.");
+            }} />
         </Box>
       </Modal>
       <Select

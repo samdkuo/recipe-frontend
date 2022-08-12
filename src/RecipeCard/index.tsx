@@ -34,7 +34,7 @@ export function RecipeCard({
   instruction,
   deleteRstate,
   updateRstate,
-  image = require("/Users/terrancekuo/src/recipe-frontend/src/necoarc.jpeg")//"https://images.unsplash.com/photo-1454944338482-a69bb95894af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80",
+  image = "https://images.unsplash.com/photo-1454944338482-a69bb95894af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80",
 }: RecipeCardProps) {
   const { visible, onClose, onOpen } = useModalState();
   const [ingredients, setIngredients] = React.useState([]);
@@ -126,11 +126,18 @@ export function RecipeCard({
                   }}
                 />
               </div>
+              <form
+                encType="multipart/form-data"
+                method="post"
+              >
+                <input type="file" name="myFile" />
+                <input type="submit" value="upload" />
+              </form>
               <Header type="title4">Description</Header>
               <Typography id="instruction" sx={{ mt: 2 }}>{`${description}`}</Typography>
               <Header type="title4">Ingredients</Header>
               <ul>
-                {[{ name: "test", quantity: 1 }].map(({ name, quantity }) => (
+                {ingredients.map(({ name, quantity }) => (
                   <Typography id="instruction" sx={{ mt: 2 }}>
                     {name}: {quantity}
                   </Typography>
@@ -173,7 +180,9 @@ export function RecipeCard({
 
             <Box className="modalBox" sx={{ position: "absolute", overflowY: "scroll", maxHeight: "115%", marginLeft: 20, width: 800, marginTop: -13 }}>
               <RecipeForm addRecipe={deleteRecipe} updateRstate={updateRstate} update={true} rid={id} name={title}
-                description={description} instruction={instruction} cooktime={cookTime} />
+                description={description} instruction={instruction} cooktime={cookTime} handleIngredientSubmit={function (data: any): void {
+                  throw new Error("Function not implemented.");
+                }} />
             </Box>
           }
         </>
