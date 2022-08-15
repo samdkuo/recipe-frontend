@@ -87,9 +87,10 @@ function IngredientInput({ rid }: RecipeFormProps) {
             <TextField
               id="units"
               label="units"
+              select
               onChange={handleChange("units")}
               onBlur={handleBlur("units")}
-            />
+            ></TextField>
 
             <Button onClick={() => handlingSubmit(values)}>Add</Button>
           </Stack>

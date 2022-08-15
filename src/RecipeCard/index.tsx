@@ -144,6 +144,10 @@ export function RecipeCard({
                   }}
                 />
               </div>
+              <form encType="multipart/form-data" method="post">
+                <input type="file" name="myFile" />
+                <input type="submit" value="upload" />
+              </form>
               <Header type="title4">Description</Header>
               <Typography
                 id="instruction"
@@ -151,7 +155,7 @@ export function RecipeCard({
               >{`${description}`}</Typography>
               <Header type="title4">Ingredients</Header>
               <ul>
-                {[{ name: "test", quantity: 1 }].map(({ name, quantity }) => (
+                {ingredients.map(({ name, quantity }) => (
                   <Typography id="instruction" sx={{ mt: 2 }}>
                     {name}: {quantity}
                   </Typography>
@@ -215,7 +219,7 @@ export function RecipeCard({
               sx={{
                 position: "absolute",
                 overflowY: "scroll",
-                maxHeight: "115%",
+                maxHeight: "100%",
                 marginLeft: 20,
                 width: 800,
                 marginTop: -13,
@@ -230,6 +234,9 @@ export function RecipeCard({
                 description={description}
                 instruction={instruction}
                 cooktime={cookTime}
+                // handleIngredientSubmit={function (data: any): void {
+                //   throw new Error("Function not implemented.");
+                // }}
               />
             </Box>
           )}
