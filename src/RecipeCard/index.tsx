@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Header } from "semantic-ui-react";
-import { Modal, Button, Box, Typography, TextField, badgeClasses } from "@mui/material"
+import {
+  Modal,
+  Button,
+  Box,
+  Typography,
+  TextField,
+  badgeClasses,
+} from "@mui/material";
 import { useModalState } from "../hooks";
-import { deleteIngrediant, deleteRecipe, fetchRecipeIngredients, updateRecipe } from "../requests/recipe";
+import {
+  deleteIngrediant,
+  deleteRecipe,
+  fetchRecipeIngredients,
+  updateRecipe,
+} from "../requests/recipe";
 import { RecipeForm } from "../RecipeForm";
-import './styles.css'
-import axios from 'axios'
+import "./styles.css";
+import axios from "axios";
 
 interface RecipeCardProps {
   id: number;
@@ -15,8 +27,8 @@ interface RecipeCardProps {
   image?: string;
   description?: string;
   instruction?: string;
-  deleteRstate: (data: any) => void
-  updateRstate: (data: any, recipe: number) => void
+  deleteRstate: (data: any) => void;
+  updateRstate: (data: any, recipe: number) => void;
 }
 
 interface Ingredient {
@@ -34,7 +46,8 @@ export function RecipeCard({
   instruction,
   deleteRstate,
   updateRstate,
-  image = require("/Users/terrancekuo/src/recipe-frontend/src/necoarc.jpeg")//"https://images.unsplash.com/photo-1454944338482-a69bb95894af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80",
+  // image = require("/Users/terrancekuo/src/recipe-frontend/src/necoarc.jpeg")
+  image = require("https://images.unsplash.com/photo-1454944338482-a69bb95894af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80"),
 }: RecipeCardProps) {
   const { visible, onClose, onOpen } = useModalState();
   const [ingredients, setIngredients] = React.useState([]);
@@ -43,75 +56,80 @@ export function RecipeCard({
       console.log(response);
       if (response) {
         setIngredients(response);
-      };
-      totalIngredients = [{ name: "bagel", quantity: 3, description: "", units: "" }];
+      }
+      totalIngredients = [
+        { name: "bagel", quantity: 3, description: "", units: "" },
+      ];
       console.log(totalIngredients);
     });
   }, [id]);
 
   const handleClick = (delid: number) => {
-    console.log("Delete " + delid)
+    console.log("Delete " + delid);
     deleteRstate(delid);
     deleteRecipe(delid);
-  }
+  };
   const deling = (delid: number, ing: string) => {
-    console.log("Delete " + ing + "from recipe " + delid)
+    console.log("Delete " + ing + "from recipe " + delid);
     deleteIngrediant(delid, ing);
-  }
+  };
 
-  const [isUpdating, setIsUpdating] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false);
   const buttonHandler = () => {
-    setIsUpdating(current => !current)
-  }
+    setIsUpdating((current) => !current);
+  };
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
   const [value, setValue] = useState("");
 
-  const [test, settest] = useState(<Button onClick={onOpen}>
-    <div style={{ padding: 8 }}>
-      {selectedImage ?
-        <img
-          style={{ width: "100%", height: 150 }}
-          src={URL.createObjectURL(selectedImage)}//require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
-        />
-        :
-        <img
-          style={{ width: "100%", height: 150 }}
-          src={image}//require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
-        />
-      }
-      <Header type="title2">
-        {title}
-      </Header>
-      <div>
-        <label>{`Cook Time: ${cookTime}`}</label>
+  const [test, settest] = useState(
+    <Button onClick={onOpen}>
+      <div style={{ padding: 8 }}>
+        {selectedImage ? (
+          <img
+            style={{ width: "100%", height: 150 }}
+            src={URL.createObjectURL(selectedImage)} //require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
+          />
+        ) : (
+          <img
+            style={{ width: "100%", height: 150 }}
+            src={image} //require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
+          />
+        )}
+        <Header type="title2">{title}</Header>
+        <div>
+          <label>{`Cook Time: ${cookTime}`}</label>
+        </div>
       </div>
-    </div>
-  </Button>);
+    </Button>
+  );
   return (
     <div>
       {test}
       <Modal
         open={visible}
-        onClose={() => { onClose(); if (isUpdating) buttonHandler(); }}
+        onClose={() => {
+          onClose();
+          if (isUpdating) buttonHandler();
+        }}
         aria-labelledby="recipe-name"
       >
         <>
-          {!isUpdating ?
+          {!isUpdating ? (
             <Box sx={style}>
               <Typography id="recipe-name" variant="h6" component="h2">
                 {`${title}`}
               </Typography>
-              {selectedImage ?
+              {selectedImage ? (
                 <img
                   style={{ width: "100%", height: "50%" }}
-                  src={URL.createObjectURL(selectedImage)}//require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
+                  src={URL.createObjectURL(selectedImage)} //require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
                 />
-                :
+              ) : (
                 <img
                   style={{ width: "100%", height: "50%" }}
-                  src={image}//require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
+                  src={image} //require("/Users/terrancekuo/src/recipe-frontend/src/emma\ soyjak\ forest.png")}
                 />
-              }
+              )}
               <div>
                 <input
                   type="file"
@@ -121,13 +139,16 @@ export function RecipeCard({
                       console.log(event.target.files[0]);
                       setSelectedImage(event.target.files[0]);
                       console.log(selectedImage);
-                      console.log(URL.createObjectURL(event.target.files[0]))
+                      console.log(URL.createObjectURL(event.target.files[0]));
                     }
                   }}
                 />
               </div>
               <Header type="title4">Description</Header>
-              <Typography id="instruction" sx={{ mt: 2 }}>{`${description}`}</Typography>
+              <Typography
+                id="instruction"
+                sx={{ mt: 2 }}
+              >{`${description}`}</Typography>
               <Header type="title4">Ingredients</Header>
               <ul>
                 {[{ name: "test", quantity: 1 }].map(({ name, quantity }) => (
@@ -146,53 +167,88 @@ export function RecipeCard({
                   if (e.key === "Enter") {
                     console.log(value);
                     deling(id, value);
-
                   }
                 }}
                 style={{ width: "100%", marginBottom: 20 }}
               />
 
-              <Header class="instructions" type="title4">Instructions</Header>
-              <Typography id="instruction" sx={{ mt: 2 }}>{`${instruction}`}</Typography>
+              <Header class="instructions" type="title4">
+                Instructions
+              </Header>
+              <Typography
+                id="instruction"
+                sx={{ mt: 2 }}
+              >{`${instruction}`}</Typography>
               <div className="updatebutton">
-                <Button style={{ position: 'absolute', width: '50%', height: '5%', backgroundColor: 'lightgreen' }} onClick={
-                  buttonHandler
-                }>
+                <Button
+                  style={{
+                    position: "absolute",
+                    width: "50%",
+                    height: "5%",
+                    backgroundColor: "lightgreen",
+                  }}
+                  onClick={buttonHandler}
+                >
                   Update
                 </Button>
               </div>
               <div className="deletebutton">
-                <Button style={{
-                  position: 'absolute', width: '50%', height: '5%', backgroundColor: 'red', color: 'black'
-                }} onClick={() => { handleClick(id) }}>
+                <Button
+                  style={{
+                    position: "absolute",
+                    width: "50%",
+                    height: "5%",
+                    backgroundColor: "red",
+                    color: "black",
+                  }}
+                  onClick={() => {
+                    handleClick(id);
+                  }}
+                >
                   Delete
                 </Button>
               </div>
             </Box>
-            :
-
-            <Box className="modalBox" sx={{ position: "absolute", overflowY: "scroll", maxHeight: "115%", marginLeft: 20, width: 800, marginTop: -13 }}>
-              <RecipeForm addRecipe={deleteRecipe} updateRstate={updateRstate} update={true} rid={id} name={title}
-                description={description} instruction={instruction} cooktime={cookTime} />
+          ) : (
+            <Box
+              className="modalBox"
+              sx={{
+                position: "absolute",
+                overflowY: "scroll",
+                maxHeight: "115%",
+                marginLeft: 20,
+                width: 800,
+                marginTop: -13,
+              }}
+            >
+              <RecipeForm
+                addRecipe={deleteRecipe}
+                updateRstate={updateRstate}
+                update={true}
+                rid={id}
+                name={title}
+                description={description}
+                instruction={instruction}
+                cooktime={cookTime}
+              />
             </Box>
-          }
+          )}
         </>
-
       </Modal>
     </div>
   );
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 500,
   height: 600,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
-  overflow: 'scroll',
+  overflow: "scroll",
   p: 4,
 };

@@ -11,15 +11,12 @@ const Navigation = ({ routes }: { routes: any }) => {
         justifyContent: "space-between",
         alignItems: "center",
         height: dimensions.headerHeight,
-        paddingTop: 8,
+        padding: 8,
         paddingBottom: 16,
       }}
     >
       <ReactLink to="/">
-        <img
-          src="images/fried-egg.png"
-          style={{ width: 40, height: 40 }}
-        />
+        <img src="images/fried-egg.png" style={{ width: 40, height: 40 }} />
       </ReactLink>
       <div
         style={{
@@ -34,7 +31,9 @@ const Navigation = ({ routes }: { routes: any }) => {
             const nav =
               route.path.substring(1, 2).toUpperCase() +
               route.path.substring(2).toLowerCase();
-            return <ReactLink key={index} to={nav} style={{ marginLeft: 16 }} />;
+            return (
+              <ReactLink key={index} to={nav} style={{ marginLeft: 16 }} />
+            );
           }
         })}
       </div>
