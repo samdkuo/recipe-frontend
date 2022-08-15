@@ -159,7 +159,7 @@ const Home = () => {
   };
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <Button
+      {/* <Button
         style={{ alignSelf: "flex-end", width: 148, marginBottom: 16 }}
         variant="contained"
         onClick={onOpen}
@@ -172,24 +172,25 @@ const Home = () => {
           sx={{
             position: "absolute",
             overflowY: "scroll",
-            maxHeight: "115%",
-            marginLeft: "10%",
             width: "80%",
-            marginTop: -13,
+            height: "80%",
+            margin: "auto",
+            // marginLeft: "10%",
+            // marginTop: -13,
           }}
-        >
-          <RecipeForm
-            addRecipe={addRecipe}
-            updateRstate={updateRstate}
-            update={false}
-            rid={0}
-            name={""}
-            description={""}
-            instruction={""}
-            cooktime={""}
-          />
-        </Box>
-      </Modal>
+        > */}
+      <RecipeForm
+        addRecipe={addRecipe}
+        updateRstate={updateRstate}
+        update={false}
+        rid={0}
+        name={""}
+        description={""}
+        instruction={""}
+        cooktime={""}
+      />
+      {/* </Box>
+      </Modal> */}
 
       <div style={{ display: "flex", flexDirection: "row" }}>
         <TextField
