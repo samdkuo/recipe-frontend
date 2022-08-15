@@ -10,6 +10,7 @@ import {
   DialogActions,
   Stack,
   TextField,
+  MenuItem,
 } from "@mui/material";
 
 import { useModalState } from "../hooks";
@@ -55,74 +56,43 @@ function IngredientInput({ rid }: RecipeFormProps) {
         onSubmit={handlingSubmit}
       >
         {({ handleChange, handleBlur, values }) => (
-          <div
+          <Stack
+            direction="row"
+            spacing={1}
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            <TextField
-              style={{
-                marginLeft: "10%",
-                backgroundColor: "#FFFFFF",
-                width: "10%",
-              }}
-              onChange={handleChange("quantity")}
-              onBlur={handleBlur("quantity")}
-              id="quantity"
-              label="quantity"
-              defaultValue=""
-            />
-
-            <TextField
-              style={{
-                backgroundColor: "#FFFFFF",
-                width: "15%",
-              }}
-              onChange={handleChange("units")}
-              onBlur={handleBlur("units")}
-              id="units"
-              label="units"
-              defaultValue=""
-            />
-
-            <TextField
-              style={{
-                backgroundColor: "#FFFFFF",
-                width: "15%",
-              }}
-              onChange={handleChange("description")}
-              onBlur={handleBlur("description")}
-              id="description"
-              label="description"
-              defaultValue=""
-            />
             <TextField
               onChange={handleChange("name")}
               onBlur={handleBlur("name")}
               id="name"
               label="name"
-              defaultValue=""
-              style={{
-                backgroundColor: "#FFFFFF",
-                width: "30%",
-              }}
+            />
+            <TextField
+              onChange={handleChange("description")}
+              onBlur={handleBlur("description")}
+              id="description"
+              label="description"
+            />
+            <TextField
+              id="quantity"
+              label="quantity"
+              onChange={handleChange("quantity")}
+              onBlur={handleBlur("quantity")}
             />
 
-            <Button
-              style={{
-                width: "10%",
-                height: "4%",
-                marginTop: 10,
-                position: "absolute",
-                backgroundColor: "black",
-                color: "white",
-              }}
-              onClick={() => handlingSubmit(values)}
-            >
-              Add
-            </Button>
-          </div>
+            <TextField
+              id="units"
+              label="units"
+              onChange={handleChange("units")}
+              onBlur={handleBlur("units")}
+            />
+
+            <Button onClick={() => handlingSubmit(values)}>Add</Button>
+          </Stack>
         )}
       </Formik>
     </div>
@@ -197,7 +167,7 @@ export function RecipeForm({
           style={{ display: "flex", flexDirection: "column", paddingTop: 8 }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={4}>
+            <Stack spacing={2}>
               <TextField
                 id="name"
                 variant="outlined"
@@ -213,36 +183,6 @@ export function RecipeForm({
                 rows={5}
                 fullWidth
               />
-              {/* <div>
-              <label>Name</label>
-              <input
-                style={{
-                  marginLeft: "10%",
-                  width: "80%",
-                  borderColor: "gray",
-                  borderRadius: 4,
-                }}
-                defaultValue={name}
-                {...register("name", { required: "Please enter recipe name." })} // custom message
-              />
-            </div> */}
-              {/* 
-            <div style={{ marginBottom: 10 }}>
-              <label>Description</label>
-              <TextField
-                style={{
-                  marginLeft: "10%",
-                  width: "80%",
-                  borderColor: "gray",
-                  borderRadius: 4,
-                }}
-                defaultValue={description}
-                multiline
-                rows={5}
-                maxRows={Infinity}
-                {...register("description")} // custom message
-              />
-            </div> */}
               {
                 <IngredientInput
                   rid={rid}
@@ -255,51 +195,35 @@ export function RecipeForm({
                   cooktime={undefined}
                 />
               }
-              <div style={{ marginBottom: 10 }}>
-                <label>Instruction</label>
-                <TextField
-                  style={{
-                    marginLeft: "10%",
-                    borderRadius: 4,
-                    borderColor: "gray",
-                    width: "80%",
-                  }}
-                  defaultValue={instruction}
-                  multiline
-                  rows={5}
-                  maxRows={Infinity}
-                  {...register("instruction")} // custom message
-                />
-                <div>
-                  <label> Label </label>
-                  <select
-                    style={{
-                      marginLeft: "10%",
-                      borderRadius: 4,
-                      borderColor: "gray",
-                      width: "80%",
-                    }}
-                    {...register("Label")}
-                  >
-                    <option value="Breakfast">Breakfast</option>
-                    <option value="Lunch">Lunch</option>
-                    <option value="Dinner">Dinner</option>
-                  </select>
-                </div>
-              </div>
-              <div style={{ marginBottom: 10 }}>
-                <label>Cooktime</label>
-                <input
-                  style={{
-                    marginLeft: "10%",
-                    borderRadius: 4,
-                    borderColor: "gray",
-                    width: "80%",
-                  }}
-                  defaultValue={cooktime}
-                  {...register("cooktime")} // custom message
-                />
-              </div>
+
+              <TextField
+                id="instructions"
+                variant="outlined"
+                label="Instructions"
+                multiline
+                rows={4}
+                fullWidth
+              />
+              <TextField
+                id="cooktime"
+                variant="outlined"
+                label="Cooktime (mins)"
+                type="number"
+                fullWidth
+              />
+              <TextField
+                id="label"
+                variant="outlined"
+                label="Label"
+                select
+                fullWidth
+              >
+                {["Breakfast", "Lunch", "Dinner"].map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Stack>
           </form>
         </DialogContent>
