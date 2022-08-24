@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useModalState, useWindowDimensionsQuery } from "../hooks";
-import { RecipeCard } from "../RecipeCard";
-import { RecipeForm } from "../RecipeForm";
+import { RecipeCard } from "../components/RecipeCard";
+import { RecipeForm } from "../components/RecipeForm";
 import {
   fetchRecipeEntries,
   fetchRecipeFromIngredient,

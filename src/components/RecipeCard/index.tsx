@@ -8,13 +8,13 @@ import {
   TextField,
   badgeClasses,
 } from "@mui/material";
-import { useModalState } from "../hooks";
+import { useModalState } from "../../hooks";
 import {
   deleteIngrediant,
   deleteRecipe,
   fetchRecipeIngredients,
   updateRecipe,
-} from "../requests/recipe";
+} from "../../requests/recipe";
 import { RecipeForm } from "../RecipeForm";
 import "./styles.css";
 import axios from "axios";

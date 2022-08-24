@@ -1,8 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Formik } from "formik";
-import { colors } from "../theme/colors";
-import { postIngredient, postRecipe, updateRecipe } from "../requests/recipe";
+import { colors } from "../../theme/colors";
+import {
+  postIngredient,
+  postRecipe,
+  updateRecipe,
+} from "../../requests/recipe";
 import {
   Dialog,
   DialogTitle,
@@ -13,8 +17,8 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import { useModalState } from "../hooks";
-import { Button } from "../components";
+import { useModalState } from "../../hooks";
+import { Button } from "..";
 
 interface RecipeFormProps {
   addRecipe: (data: any) => void;
