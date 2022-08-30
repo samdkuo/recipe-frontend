@@ -28,7 +28,7 @@ interface RecipeCardProps {
   description?: string;
   instruction?: string;
   deleteRstate: (data: any) => void;
-  updateRstate: (data: any, recipe: number) => void;
+  updateRecipeState: (data: any, recipe: number) => void;
 }
 
 interface Ingredient {
@@ -45,7 +45,7 @@ export function RecipeCard({
   description,
   instruction,
   deleteRstate,
-  updateRstate,
+  updateRecipeState,
   // image = require("/Users/terrancekuo/src/recipe-frontend/src/necoarc.jpeg")
   image = require("https://images.unsplash.com/photo-1454944338482-a69bb95894af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80"),
 }: RecipeCardProps) {
@@ -227,7 +227,7 @@ export function RecipeCard({
             >
               <RecipeForm
                 addRecipe={deleteRecipe}
-                updateRstate={updateRstate}
+                updateRecipeState={updateRecipeState}
                 update={true}
                 rid={id}
                 name={title}

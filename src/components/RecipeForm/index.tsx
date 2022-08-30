@@ -1,6 +1,4 @@
-import React, { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Formik } from "formik";
+import React, { useCallback, useState, useMemo } from "react";
 import { colors } from "../../theme/colors";
 import {
   postIngredient,
@@ -18,145 +16,75 @@ import {
 } from "@mui/material";
 
 import { useModalState } from "../../hooks";
-import { Button } from "..";
-
-interface RecipeFormProps {
-  addRecipe: (data: any) => void;
-  updateRstate: (data: any, rid: number) => void;
-  update: boolean;
-  rid: number;
-  name: any;
-  description: any;
-  instruction: any;
-  cooktime: any;
-}
-interface Ingredient {
-  name: string;
-  quantity: number;
-  description: string;
-  units: string;
-}
-interface Recipe {
-  name: string;
-  description: string;
-  ingredients: Array<Ingredient>;
-  instruction: string;
-}
-
-function IngredientInput({ rid }: RecipeFormProps) {
-  const handlingSubmit = (values: Ingredient) => {
-    console.log(values.name);
-    console.log(values.quantity);
-    console.log(values.description);
-    console.log(rid);
-    postIngredient(values, rid);
-  };
-  return (
-    <div>
-      <label>Add Ingredients</label>
-
-      <Formik
-        initialValues={{ name: "", quantity: 0, units: "", description: "" }}
-        onSubmit={handlingSubmit}
-      >
-        {({ handleChange, handleBlur, values }) => (
-          <Stack
-            direction="row"
-            spacing={1}
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <TextField
-              onChange={handleChange("name")}
-              onBlur={handleBlur("name")}
-              id="name"
-              label="name"
-            />
-            <TextField
-              onChange={handleChange("description")}
-              onBlur={handleBlur("description")}
-              id="description"
-              label="description"
-            />
-            <TextField
-              id="quantity"
-              label="quantity"
-              onChange={handleChange("quantity")}
-              onBlur={handleBlur("quantity")}
-            />
-
-            <TextField
-              id="units"
-              label="units"
-              select
-              onChange={handleChange("units")}
-              onBlur={handleBlur("units")}
-            ></TextField>
-
-            <Button onClick={() => handlingSubmit(values)}>Add</Button>
-          </Stack>
-        )}
-      </Formik>
-    </div>
-  );
-}
+import { Button } from "../Button";
+import { IngredientInput } from "./IngredientInput";
+import { RecipeFormProps, labels, IngredientProps } from "./types";
 
 export function RecipeForm({
   addRecipe,
-  updateRstate,
-  name,
+  updateRecipeState,
   update,
   rid,
+  name,
   description,
   instruction,
   cooktime,
 }: RecipeFormProps) {
   const { visible, onClose, onOpen } = useModalState();
-  const [ingredientsList, setIngredientsList] = React.useState<
-    Array<Ingredient>
+  const initialValues = useMemo(() => {
+    return {
+      name: name ? name : "",
+      description: description ? description : "",
+      instructions: instruction ? instruction : "",
+      cooktime: cooktime ? cooktime : "",
+      label: "",
+    };
+  }, [name, description, instruction, cooktime]);
+
+  const [ingredientsList, setIngredientsList] = useState<
+    Array<IngredientProps>
   >([]);
+  const [recipe, setRecipe] = useState(initialValues);
+
+  const handleClose = useCallback(() => {
+    onClose();
+    setIngredientsList([]);
+    setRecipe(initialValues);
+  }, [onClose, initialValues]);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const data = event.target;
+      setRecipe({ ...recipe, [data.name]: data.value });
+    },
+    [recipe]
+  );
 
   const handleIngredientSubmit = useCallback(
-    (values: Ingredient) => {
-      setIngredientsList([...ingredientsList, values]);
+    (ingredient: IngredientProps) => {
+      setIngredientsList([...ingredientsList, ingredient]);
     },
     [ingredientsList]
   );
 
-  const { register, handleSubmit } = useForm({
-    shouldUseNativeValidation: true,
-  });
-
-  const onSubmit = (data: any) => {
-    switch (data.Label) {
-      case "Breakfast":
-        data.Label = { id: 1 };
-        break;
-      case "Lunch":
-        data.Label = { id: 2 };
-        break;
-      default:
-        data.Label = { id: 3 };
-        break;
-    }
-    console.log(data.Label);
+  const handleSubmit = useCallback(() => {
+    const data = { ...recipe, Label: { id: recipe.label } };
+    console.log(data);
     if (!update) {
-      postRecipe(data).then((response: any) => {
+      postRecipe({ data }).then((response: any) => {
         console.log(response);
-        const recipe = { ...data, id: response };
-        console.log(recipe);
-        addRecipe(recipe);
+        addRecipe({ ...data, id: response });
       });
     } else {
       console.log(update);
       console.log(data);
-      updateRstate(data, rid);
+      updateRecipeState(data, rid);
       updateRecipe(data, rid);
     }
-  };
+
+    handleClose();
+  }, [recipe, rid, update, addRecipe, updateRecipeState, handleClose]);
+
   return (
     <div style={{ alignSelf: "flex-end" }}>
       <Button
@@ -166,88 +94,82 @@ export function RecipeForm({
       >
         Add Recipe +
       </Button>
-      <Dialog open={visible} onClose={onClose}>
+      <Dialog open={visible} onClose={handleClose}>
         <DialogTitle id="scroll-dialog-title">Create New Recipe</DialogTitle>
         <DialogContent
           style={{ display: "flex", flexDirection: "column", paddingTop: 8 }}
         >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={2}>
-              <TextField
-                id="name"
-                variant="outlined"
-                label="Name"
-                type="text"
-                fullWidth
-              />
-              <TextField
-                id="description"
-                variant="outlined"
-                label="Description"
-                multiline
-                rows={5}
-                fullWidth
-              />
-              {
-                <IngredientInput
-                  rid={rid}
-                  addRecipe={function (data: any): void {}}
-                  updateRstate={function (data: any, rid: number): void {}}
-                  update={false}
-                  name={undefined}
-                  description={undefined}
-                  instruction={undefined}
-                  cooktime={undefined}
-                />
-              }
+          <Stack spacing={2}>
+            <TextField
+              name="name"
+              id="name"
+              variant="outlined"
+              label="Name"
+              value={recipe.name}
+              onChange={handleChange}
+              type="text"
+              fullWidth
+            />
+            <TextField
+              name="description"
+              id="description"
+              variant="outlined"
+              label="Description"
+              value={recipe.description}
+              onChange={handleChange}
+              multiline
+              rows={5}
+              fullWidth
+            />
+            <IngredientInput handleIngredientSubmit={handleIngredientSubmit} />
+            {ingredientsList.map((ingredient, index) => (
+              <p
+                key={index}
+              >{`${ingredient.name}: ${ingredient.description} ${ingredient.quantity} ${ingredient.units}`}</p>
+            ))}
 
-              <TextField
-                id="instructions"
-                variant="outlined"
-                label="Instructions"
-                multiline
-                rows={4}
-                fullWidth
-              />
-              <TextField
-                id="cooktime"
-                variant="outlined"
-                label="Cooktime (mins)"
-                type="number"
-                fullWidth
-              />
-              <TextField
-                id="label"
-                variant="outlined"
-                label="Label"
-                select
-                fullWidth
-              >
-                {["Breakfast", "Lunch", "Dinner"].map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Stack>
-          </form>
+            <TextField
+              name="instructions"
+              id="instructions"
+              variant="outlined"
+              label="Instructions"
+              value={recipe.instructions}
+              onChange={handleChange}
+              multiline
+              rows={4}
+              fullWidth
+            />
+            <TextField
+              name="cooktime"
+              id="cooktime"
+              variant="outlined"
+              label="Cooktime (mins)"
+              value={recipe.cooktime}
+              onChange={handleChange}
+              type="number"
+              fullWidth
+            />
+            <TextField
+              name="label"
+              id="label"
+              label="Label"
+              value={recipe.label}
+              onChange={handleChange}
+              select
+              fullWidth
+            >
+              {labels.map((label, index) => (
+                <MenuItem key={index} value={label.value}>
+                  {label.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <input type="submit" />
+          <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};

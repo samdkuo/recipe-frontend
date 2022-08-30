@@ -1,5 +1,5 @@
 export interface RecipeFormProps {
-  rid?: number;
+  rid: number;
   update?: boolean;
   name: any;
   description: any;
@@ -7,7 +7,15 @@ export interface RecipeFormProps {
   cooktime: any;
   addRecipe: (data: any) => void;
   updateRecipeState: (data: any, rid: number) => void;
-  handleIngredientSubmit: (data: any) => void;
+  // handleIngredientSubmit: (data: any) => void;
+}
+
+export interface RecipeProps {
+  name: string;
+  description: string;
+  ingredients: Array<IngredientProps>;
+  instruction: string;
+  cooktime: string;
 }
 
 export interface IngredientProps {
@@ -16,3 +24,10 @@ export interface IngredientProps {
   description: string;
   units: string;
 }
+
+//["Breakfast", "Lunch", "Dinner"]
+export const labels = [
+  { name: "Breakfast", value: 1 },
+  { name: "Lunch", value: 2 },
+  { name: "Dinner", value: 3 },
+];

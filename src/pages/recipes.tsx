@@ -81,7 +81,7 @@ const Home = () => {
     [recipes, setRecipes]
   );
 
-  const updateRstate = useCallback(
+  const updateRecipeState = useCallback(
     (entry: any, recipe: number) => {
       const newState = recipes.map((item) => {
         if (item.id === recipe) {
@@ -181,7 +181,7 @@ const Home = () => {
         > */}
       <RecipeForm
         addRecipe={addRecipe}
-        updateRstate={updateRstate}
+        updateRecipeState={updateRecipeState}
         update={false}
         rid={0}
         name={""}
@@ -249,7 +249,7 @@ const Home = () => {
           ) => (
             <RecipeCard
               deleteRstate={deleteRstate}
-              updateRstate={updateRstate}
+              updateRecipeState={updateRecipeState}
               key={index}
               id={id}
               title={name}
