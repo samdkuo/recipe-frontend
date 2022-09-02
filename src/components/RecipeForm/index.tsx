@@ -13,7 +13,9 @@ import {
   Stack,
   TextField,
   MenuItem,
+  IconButton,
 } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
 
 import { useModalState } from "../../hooks";
 import { Button } from "../Button";
@@ -35,7 +37,7 @@ export function RecipeForm({
     return {
       name: name ? name : "",
       description: description ? description : "",
-      instructions: instruction ? instruction : "",
+      instruction: instruction ? instruction : "",
       cooktime: cooktime ? cooktime : "",
       label: "",
     };
@@ -74,16 +76,32 @@ export function RecipeForm({
       postRecipe({ data }).then((response: any) => {
         console.log(response);
         addRecipe({ ...data, id: response });
+        ingredientsList.map((ingredient) => {
+          postIngredient(ingredient, response);
+          console.log("ingredient posted in form");
+        });
       });
     } else {
       console.log(update);
       console.log(data);
+      ingredientsList.map((ingredient) => {
+        postIngredient(ingredient, response);
+        console.log("ingredient posted in form");
+      });
       updateRecipeState(data, rid);
       updateRecipe(data, rid);
     }
 
     handleClose();
-  }, [recipe, rid, update, addRecipe, updateRecipeState, handleClose]);
+  }, [
+    recipe,
+    ingredientsList,
+    rid,
+    update,
+    addRecipe,
+    updateRecipeState,
+    handleClose,
+  ]);
 
   return (
     <div style={{ alignSelf: "flex-end" }}>
@@ -94,8 +112,18 @@ export function RecipeForm({
       >
         Add Recipe +
       </Button>
-      <Dialog open={visible} onClose={handleClose}>
-        <DialogTitle id="scroll-dialog-title">Create New Recipe</DialogTitle>
+      <Dialog maxWidth="md" open={visible} onClose={handleClose}>
+        <DialogTitle id="scroll-dialog-title">
+          Create New Recipe
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <input hidden accept="image/*" type="file" />
+            <PhotoCamera />
+          </IconButton>
+        </DialogTitle>
         <DialogContent
           style={{ display: "flex", flexDirection: "column", paddingTop: 8 }}
         >
@@ -118,7 +146,7 @@ export function RecipeForm({
               value={recipe.description}
               onChange={handleChange}
               multiline
-              rows={5}
+              rows={3}
               fullWidth
             />
             <IngredientInput handleIngredientSubmit={handleIngredientSubmit} />
@@ -129,14 +157,14 @@ export function RecipeForm({
             ))}
 
             <TextField
-              name="instructions"
-              id="instructions"
+              name="instruction"
+              id="instruction"
               variant="outlined"
               label="Instructions"
-              value={recipe.instructions}
+              value={recipe.instruction}
               onChange={handleChange}
               multiline
-              rows={4}
+              rows={3}
               fullWidth
             />
             <TextField
