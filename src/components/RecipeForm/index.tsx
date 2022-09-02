@@ -84,8 +84,8 @@ export function RecipeForm({
     } else {
       console.log(update);
       console.log(data);
-      ingredientsList.map((ingredient) => {
-        postIngredient(ingredient, response);
+      ingredientsList.map((ingridient) => {
+        postIngredient(ingridient, rid);
         console.log("ingredient posted in form");
       });
       updateRecipeState(data, rid);
