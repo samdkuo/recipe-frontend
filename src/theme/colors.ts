@@ -41,10 +41,10 @@ export type TextThemeColor =
 /* background-color: #f7dccc; */
 export const colors = {
   // Elemental
-  primary: "#ff775c",
+  secondary: "#fc9f67",
+  primary: "#67c4fc",
   tertiary: "#fcd378",
   primaryMuted: "#fcd4a8",
-  secondary: "#fc9f61",
   text: "#f6f3e4",
   background: "#FFFFFA",
 

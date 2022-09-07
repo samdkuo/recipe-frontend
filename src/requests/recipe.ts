@@ -80,7 +80,7 @@ export const postRecipe = (entry: any) => {
         description: entry.description,
         instruction: entry.instruction,
         cooktime: entry.cooktime,
-        Label: entry.Label
+        Label: entry.Label,
       },
       { headers: { "Jwt-Token": "" } }
     )
@@ -104,7 +104,7 @@ export const postIngredient = (entry: any, rid:number) => {
         name: entry.name,
         unit: entry.unit,
         description: entry.description,
-        quantity: entry.quantity
+        quantity: entry.quantity,
       },
       { headers: { "Jwt-Token": "" } }
     )
@@ -190,6 +190,64 @@ export const SearchRecipeEntries = (Rname: string) => {
     .get(`${recipe}/${Rname}`, { headers: { "Jwt-Token": "" } })
     .then((response) => {
       console.log("successful recipe name search");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const postimage = (image: any) => {
+  const api = serverURL;
+  const recipe = `${api}/uploadfile/1`;
+  return axios
+  .post(
+    `${recipe}`,
+    {
+      myFile: image
+    },
+    { headers: { "Jwt-Token": "",   "Content-Type": "multipart/form-data", } }
+  )
+    .then((response) => {
+      console.log(image);
+      console.log("successful image post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const fetchrecipeimage = () => {
+  const api = serverURL;
+  const recipe = `${api}/recipe_image`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful recipe from ingredient search");
+      console.log(response.data)
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const postRecipeimage = (rid:number, url:string) => {
+  console.log(rid + " " + url);
+  const api = serverURL;
+  const recipe = `${api}/recipe_image`;
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        recipe_id: rid,
+        image_url: url,
+      },
+      { headers: { "Jwt-Token": "" } }
+    )
+    .then((response) => {
+      console.log("successful recipe_image post");
       return response.data;
     })
     .catch((error) => {
