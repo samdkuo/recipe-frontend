@@ -132,6 +132,21 @@ export const deleteRecipe = (recipeId: number) => {
     });
 };
 
+export const deleteRecipeImage = (recipeId: number) => {
+  const api = serverURL;
+  const recipe = `${api}/recipe_image`;
+
+  return axios
+    .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful delete");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
 export const deleteIngrediant = (recipeId: number, ingredientname: string) => {
   const api = serverURL;
   const recipe = `${api}/ingredient/recipeID/${recipeId}/ingredientID/${ingredientname}`;

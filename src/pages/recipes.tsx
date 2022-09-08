@@ -56,9 +56,6 @@ const Home = () => {
         console.log(images);
         fetchRecipeEntries().then((response: Recipe[]) => {
           if (response) {
-            const text = response[2].description;
-            const newText = text.split("\n").map((str) => <p>{str}</p>);
-            console.log(newText);
             for (let i = 0; i < response.length; i++) {
               response[i].image = "/images/abfaf909-081a-4c0c-b18b-5c3ab617bee4.png";
               for (let j = 0; j < images.length; j++) {
@@ -125,6 +122,7 @@ const Home = () => {
 
   const updateRecipeImage = useCallback(
     (recipe: number, imagepath: string) => {
+      console.log(recipes);
       const newState = recipes.map((item) => {
         if (item.id === recipe) {
           return {
@@ -177,9 +175,6 @@ const Home = () => {
           console.log(images);
           fetchRecipeEntries().then((response: Recipe[]) => {
             if (response) {
-              const text = response[2].description;
-              const newText = text.split("\n").map((str) => <p>{str}</p>);
-              console.log(newText);
               for (let i = 0; i < response.length; i++) {
                 response[i].image = "/images/abfaf909-081a-4c0c-b18b-5c3ab617bee4.png";
                 for (let j = 0; j < images.length; j++) {
@@ -223,6 +218,7 @@ const Home = () => {
       <RecipeForm
         addRecipe={addRecipe}
         updateRecipeState={updateRecipeState}
+        updateRecipeImage={updateRecipeImage}
         update={false}
         rid={0}
         name={""}
