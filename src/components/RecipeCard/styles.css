@@ -1,0 +1,22 @@
+div {
+  white-space: pre-wrap;
+}
+@media all {
+  .instructions {
+    order: 1;
+  }
+  .updatebutton {
+    order: 2;
+  }
+  .deletebutton {
+    order: 3;
+  }
+}
+.updatebutton {
+  margin-top: 3%;
+  margin-left: 20%;
+}
+.deletebutton {
+  margin-top: 13%;
+  margin-left: 20%;
+}

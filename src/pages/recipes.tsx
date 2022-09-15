@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useModalState, useWindowDimensionsQuery } from "../hooks";
 import { RecipeCard } from "../components/RecipeCard";
 import { RecipeForm } from "../components/RecipeForm";
@@ -17,7 +17,9 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  Dialog,
 } from "@mui/material";
+import configData from "../config.json";
 
 import { Search } from "@mui/icons-material";
 
@@ -48,7 +50,11 @@ interface Image {
 
 const Home = () => {
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
-  const [value, setValue] = useState("");
+  const [value, setValue] = React.useState("");
+  const [searchData, setSearchData] = React.useState(recipes);
+  const [searchtype, setsearchtype] = React.useState("byname");
+  const { small, medium } = useWindowDimensionsQuery();
+  const { visible, onClose, onOpen } = useModalState();
 
   React.useEffect(() => {
     fetchrecipeimage().then((images: Image[]) => {
@@ -57,7 +63,7 @@ const Home = () => {
         fetchRecipeEntries().then((response: Recipe[]) => {
           if (response) {
             for (let i = 0; i < response.length; i++) {
-              response[i].image = "/images/abfaf909-081a-4c0c-b18b-5c3ab617bee4.png";
+              response[i].image = configData.default_image;
               for (let j = 0; j < images.length; j++) {
                 if (response[i].id == images[j].recipe_id) {
                   response[i].image = images[j].image_url;
@@ -72,8 +78,6 @@ const Home = () => {
     });
   }, []);
 
-  const { small, medium } = useWindowDimensionsQuery();
-  const { visible, onClose, onOpen } = useModalState();
 
   const addRecipe = useCallback(
     (recipe: Recipe) => {
@@ -87,13 +91,27 @@ const Home = () => {
 
   const deleteRstate = useCallback(
     (recipe: number) => {
-      console.log("delete recipe, ", recipe);
-      const newlist = recipes.filter((item) => item.id !== recipe);
-      console.log(newlist);
-      const clear = recipes.filter((item) => item.id <= 0);
-      console.log(clear);
-      setRecipes(clear);
-      setRecipes(newlist);
+      fetchrecipeimage().then((images: Image[]) => {
+        if (images) {
+          console.log(images);
+          fetchRecipeEntries().then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
+                }
+              }
+              const clear = recipes.filter((item) => item.id <= 0);
+              setRecipes(clear);
+              console.log(response);
+              setRecipes(response);
+            }
+          });
+        }
+      });
     },
     [recipes, setRecipes]
   );
@@ -108,6 +126,7 @@ const Home = () => {
             description: entry.description,
             instruction: entry.instruction,
             cooktime: entry.cooktime,
+            image: entry.image
           };
         }
         return item;
@@ -140,9 +159,6 @@ const Home = () => {
     [recipes, setRecipes]
   );
 
-  const [searchData, setSearchData] = useState(recipes);
-
-  const [searchtype, setsearchtype] = React.useState("byname");
   const choosesearch = (event: SelectChangeEvent) => {
     setsearchtype(event.target.value as string);
   };
@@ -154,7 +170,7 @@ const Home = () => {
           SearchRecipeEntries(query).then((response: Recipe[]) => {
             if (response) {
               for (let i = 0; i < response.length; i++) {
-                response[i].image = "/images/abfaf909-081a-4c0c-b18b-5c3ab617bee4.png";
+                response[i].image = configData.default_image;
                 for (let j = 0; j < images.length; j++) {
                   if (response[i].id == images[j].recipe_id) {
                     response[i].image = images[j].image_url;
@@ -176,7 +192,7 @@ const Home = () => {
           fetchRecipeEntries().then((response: Recipe[]) => {
             if (response) {
               for (let i = 0; i < response.length; i++) {
-                response[i].image = "/images/abfaf909-081a-4c0c-b18b-5c3ab617bee4.png";
+                response[i].image = configData.default_image;
                 for (let j = 0; j < images.length; j++) {
                   if (response[i].id == images[j].recipe_id) {
                     response[i].image = images[j].image_url;
@@ -215,17 +231,28 @@ const Home = () => {
             // marginTop: -13,
           }}
         > */}
-      <RecipeForm
-        addRecipe={addRecipe}
-        updateRecipeState={updateRecipeState}
-        updateRecipeImage={updateRecipeImage}
-        update={false}
-        rid={0}
-        name={""}
-        description={""}
-        instruction={""}
-        cooktime={""}
-      />
+      <Button
+        style={{ width: 148, marginBottom: 16 }}
+        variant="contained"
+        onClick={onOpen}
+      >
+        Add Recipe +
+      </Button>
+      <Dialog maxWidth="md" open={visible} onClose={onClose}>
+        <RecipeForm
+          addRecipe={addRecipe}
+          updateRecipeState={updateRecipeState}
+          updateRecipeImage={updateRecipeImage}
+          onClose={onClose}
+          update={false}
+          rid={0}
+          image={"/images/icons8-sunny-side-up-eggs-96.png"}
+          name={""}
+          description={""}
+          instruction={""}
+          cooktime={""}
+        />
+      </Dialog>
       {/* </Box>
       </Modal> */}
 
@@ -267,9 +294,9 @@ const Home = () => {
       </div>
 
       <Grid
-        numColumns={small ? 1 : medium ? 3 : 5}
+        numColumns={small ? 1 : medium ? 4 : 6}
         gap={16}
-        style={{ justifyContent: "center" }}
+        style={{ justifyContent: "center", marginTop: 16 }}
       >
         {recipes.map(
           (

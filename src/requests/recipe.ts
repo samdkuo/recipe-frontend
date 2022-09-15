@@ -102,7 +102,7 @@ export const postIngredient = (entry: any, rid:number) => {
       `${recipe}`,
       {
         name: entry.name,
-        unit: entry.unit,
+        unit: entry.units,
         description: entry.description,
         quantity: entry.quantity,
       },
@@ -257,6 +257,27 @@ export const postRecipeimage = (rid:number, url:string) => {
       `${recipe}`,
       {
         recipe_id: rid,
+        image_url: url,
+      },
+      { headers: { "Jwt-Token": "" } }
+    )
+    .then((response) => {
+      console.log("successful recipe_image post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const updateRecipeimage = (rid:number, url:string) => {
+  console.log(rid + " " + url);
+  const api = serverURL;
+  const recipe = `${api}/recipe_image/${rid}`;
+  return axios
+    .put(
+      `${recipe}`,
+      {
         image_url: url,
       },
       { headers: { "Jwt-Token": "" } }
