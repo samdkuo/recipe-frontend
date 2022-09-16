@@ -24,8 +24,8 @@ export interface RecipeProps {
 export interface IngredientProps {
   name: string;
   quantity: string;
-  description: string;
-  units: string;
+  adjective: string;
+  unit: string;
 }
 
 //["Breakfast", "Lunch", "Dinner"]

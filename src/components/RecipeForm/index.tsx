@@ -71,21 +71,23 @@ export function RecipeForm({
     [recipe]
   );
 
+  const [ingredients, setIngredients] = useState<
+    Array<IngredientProps>
+  >([]);
   const handleIngredientSubmit = useCallback(
     (ingredient: IngredientProps) => {
       setIngredientsList([...ingredientsList, ingredient]);
+      setIngredients([...ingredients, ingredient]);
     },
-    [ingredientsList]
+    [ingredientsList, ingredients]
   );
 
   const handleClick = (rid: number, delid: string) => {
     const newlist = ingredients.filter((item: { name: string; }) => item.name !== delid);
     setIngredients(newlist);
     deleteIngrediant(rid, delid)
-  };
-  const handletempClick = (delid: string) => {
-    const newlist = ingredients.filter((item: { name: string; }) => item.name !== delid);
-    setIngredients(newlist);
+    const newlist2 = ingredientsList.filter((item: { name: string; }) => item.name !== delid);
+    setIngredientsList(newlist2);
   };
 
   const handleSubmit = useCallback(() => {
@@ -122,15 +124,20 @@ export function RecipeForm({
         postIngredient(ingridient, rid);
         console.log("ingredient posted in form");
       });
-      postimage(selectedImage).then((imageurl: string) => {
-        console.log(imageurl);
-        if (imageurl) {
-          updateRecipeState({ ...data, image: imageurl }, rid);
-          updateRecipeimage(rid, imageurl);
-        } else {
-          updateRecipeState(data, rid);
-        }
-      });
+      if (!selectedImage) {
+        updateRecipeState({ ...data, image: image }, rid);
+      } else {
+        postimage(selectedImage).then((imageurl: string) => {
+          console.log(imageurl);
+          if (imageurl) {
+            updateRecipeState({ ...data, image: imageurl }, rid);
+            updateRecipeimage(rid, imageurl);
+          } else {
+            updateRecipeState(data, rid);
+          }
+
+        });
+      }
       updateRecipe(data, rid);
     }
     handleClose();
@@ -145,7 +152,6 @@ export function RecipeForm({
   ]);
 
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
-  const [ingredients, setIngredients] = React.useState([]);
   React.useEffect(() => {
     fetchRecipeIngredients(rid).then((response: any) => {
       console.log(response);
@@ -218,16 +224,15 @@ export function RecipeForm({
             fullWidth
           />
           <IngredientInput handleIngredientSubmit={handleIngredientSubmit} />
-
           <ul>
-            {ingredients.map(({ name, quantity, description, units }) => (
+            {ingredients.map(({ name, quantity, adjective, unit }) => (
               <Typography id="instruction" sx={{ mt: 2 }}>
                 <Button>
                   <IngredientButton
                     name={name}
                     quantity={quantity}
-                    description={description}
-                    units={units}
+                    description={adjective}
+                    unit={unit}
                   />
                   <Button
                     onClick={() => {
@@ -239,28 +244,6 @@ export function RecipeForm({
               </Typography>
             ))}
           </ul>
-          {ingredientsList.map((ingredient, index) => (
-            <p
-              key={index}
-            >{<
-              Typography id="instruction" sx={{ mt: 2 }}>
-              <Button>
-                <IngredientButton
-                  name={ingredient.name}
-                  quantity={ingredient.quantity}
-                  description={ingredient.description}
-                  units={ingredient.units}
-                />
-                <Button
-                  onClick={() => {
-                    handletempClick(name);
-                  }}>
-                  Delete
-                </Button>
-              </Button>
-            </Typography>
-              }</p>
-          ))}
 
           <TextField
             name="instruction"

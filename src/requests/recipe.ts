@@ -103,7 +103,7 @@ export const postIngredient = (entry: any, rid:number) => {
       {
         name: entry.name,
         unit: entry.units,
-        description: entry.description,
+        adjective: entry.description,
         quantity: entry.quantity,
       },
       { headers: { "Jwt-Token": "" } }

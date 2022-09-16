@@ -10,9 +10,9 @@ export function IngredientInput({
   const initialValues = useMemo(() => {
     return {
       name: "",
-      description: "",
+      adjective: "",
       quantity: "",
-      units: "",
+      unit: "",
     };
   }, []);
   const [ingredient, setIngredient] = useState(initialValues);
@@ -43,10 +43,10 @@ export function IngredientInput({
           fullWidth
         />
         <TextField
-          name="description"
-          label="description"
+          name="Description"
+          label="Description"
           onChange={handleChange}
-          value={ingredient.description}
+          value={ingredient.adjective}
           fullWidth
         />
         <TextField
@@ -58,11 +58,11 @@ export function IngredientInput({
           style={{ width: 250 }}
         />
         <TextField
-          name="units"
-          label="units"
+          name="unit"
+          label="unit"
           select
           onChange={handleChange}
-          value={ingredient.units}
+          value={ingredient.unit}
           style={{ width: 250 }}
         >
           {units.map((option, index) => (

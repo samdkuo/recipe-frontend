@@ -174,9 +174,9 @@ export function RecipeCard({
               >{`${description}`}</Typography>
               <Header type="title4">Ingredients</Header>
               <ul>
-                {ingredients.map(({ name, quantity }) => (
+                {ingredients.map(({ name, quantity, adjective, unit }) => (
                   <Typography id="instruction" sx={{ mt: 2 }}>
-                    {name}: {quantity}
+                    {name}: {adjective} {quantity} {unit}
                   </Typography>
                 ))}
               </ul>
@@ -188,7 +188,7 @@ export function RecipeCard({
                 sx={{ mt: 2 }}
               >{`${instruction}`}</Typography>
             </Box>
-          ) : (
+          ) : (<>
             <RecipeForm
               addRecipe={deleteRecipe}
               updateRecipeState={updateRecipeState}
@@ -200,9 +200,26 @@ export function RecipeCard({
               image={image}
               description={description}
               instruction={instruction}
-              cooktime={cookTime}
-            />
-          )}
+              cooktime={cookTime} />
+            <Button
+              style={{
+                position: "sticky",
+                left: "25%",
+                width: "20%",
+                height: "5%",
+                backgroundColor: "#67c4fc",
+                color: "white",
+              }}
+              onClick={() => {
+                buttonHandler();
+              }}
+            >
+              Cancel
+            </Button>
+          </>
+
+          )
+          }
         </DialogContent>
       </Dialog>
     </div >

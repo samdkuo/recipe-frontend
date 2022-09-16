@@ -3,20 +3,20 @@ import { Delete } from "@mui/icons-material";
 
 export function IngredientItem({
   name,
-  description,
+  adjective,
   quantity,
-  units,
+  unit,
   onDelete,
 }: {
   name: string;
-  description: string;
+  adjective: string;
   quantity: string;
-  units: string;
+  unit: string;
   onDelete: VoidFunction;
 }) {
   return (
     <div>
-      <p>{`${name}: ${description} ${quantity} ${units}`}</p>
+      <p>{`${name}: ${adjective} ${quantity} ${unit}`}</p>
       <IconButton aria-label="delete" onClick={onDelete}>
         <Delete />
       </IconButton>

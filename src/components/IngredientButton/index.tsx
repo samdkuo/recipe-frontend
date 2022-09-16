@@ -9,14 +9,14 @@ interface Ingredient {
   name?: string;
   quantity?: string;
   description?: string;
-  units?: string;
+  unit?: string;
 }
 export function IngredientButton(
   {
     name,
     quantity,
     description,
-    units
+    unit
   }: Ingredient) {
   return (
     <MuiButton
@@ -27,7 +27,7 @@ export function IngredientButton(
       }
       }
     >
-      {name}: {description} {quantity} {units}
+      {name}: {description} {quantity} {unit}
     </MuiButton>
   );
 }
