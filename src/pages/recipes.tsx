@@ -163,7 +163,7 @@ const Home = () => {
     setsearchtype(event.target.value as string);
   };
   const searchItem = (query: any) => {
-    if (query !== "") {
+    if (query !== "" && query.length > 2) {
       fetchrecipeimage().then((images: Image[]) => {
         if (images) {
           console.log(images);
@@ -210,7 +210,8 @@ const Home = () => {
     }
   };
   const searchIngredient = (query: any) => {
-    if (query !== "") {
+    if (query !== "" && query.length > 2) {
+      console.log(query);
       fetchrecipeimage().then((images: Image[]) => {
         if (images) {
           console.log(images);
