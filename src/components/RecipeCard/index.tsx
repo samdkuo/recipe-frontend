@@ -82,6 +82,7 @@ export function RecipeCard({
     deleteRecipeImage(delid);
   };
 
+
   const [isUpdating, setIsUpdating] = useState(false);
   const buttonHandler = () => {
     setIsUpdating((current) => !current);
@@ -195,27 +196,13 @@ export function RecipeCard({
               updateRecipeImage={updateRecipeImage}
               onClose={onClose}
               update={true}
+              buttonHandler={buttonHandler}
               rid={id}
               name={title}
               image={image}
               description={description}
               instruction={instruction}
               cooktime={cookTime} />
-            <Button
-              style={{
-                position: "sticky",
-                left: "25%",
-                width: "20%",
-                height: "5%",
-                backgroundColor: "#67c4fc",
-                color: "white",
-              }}
-              onClick={() => {
-                buttonHandler();
-              }}
-            >
-              Cancel
-            </Button>
           </>
 
           )

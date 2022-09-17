@@ -43,7 +43,7 @@ export function IngredientInput({
           fullWidth
         />
         <TextField
-          name="Description"
+          name="adjective"
           label="Description"
           onChange={handleChange}
           value={ingredient.adjective}

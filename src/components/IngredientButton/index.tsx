@@ -8,14 +8,14 @@ import { colors } from "../../theme/colors";
 interface Ingredient {
   name?: string;
   quantity?: string;
-  description?: string;
+  adjective?: string;
   unit?: string;
 }
 export function IngredientButton(
   {
     name,
     quantity,
-    description,
+    adjective,
     unit
   }: Ingredient) {
   return (
@@ -27,7 +27,7 @@ export function IngredientButton(
       }
       }
     >
-      {name}: {description} {quantity} {unit}
+      {name}: {adjective} {quantity} {unit}
     </MuiButton>
   );
 }

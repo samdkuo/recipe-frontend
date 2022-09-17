@@ -209,6 +209,53 @@ const Home = () => {
       });
     }
   };
+  const searchIngredient = (query: any) => {
+    if (query !== "") {
+      fetchrecipeimage().then((images: Image[]) => {
+        if (images) {
+          console.log(images);
+          fetchRecipeFromIngredient(query).then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
+                }
+              }
+              const clear = recipes.filter((item) => item.id <= 0);
+              setRecipes(clear);
+              console.log(response);
+              setRecipes(response);
+            }
+          });
+        }
+      });
+    } else {
+      fetchrecipeimage().then((images: Image[]) => {
+        if (images) {
+          console.log(images);
+          fetchRecipeEntries().then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
+                }
+              }
+              const clear = recipes.filter((item) => item.id <= 0);
+              setRecipes(clear);
+              console.log(response);
+              setRecipes(response);
+            }
+          });
+        }
+      });
+    }
+  };
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {/* <Button
@@ -251,29 +298,49 @@ const Home = () => {
           description={""}
           instruction={""}
           cooktime={""}
-        />
+          buttonHandler={onClose} />
       </Dialog>
       {/* </Box>
       </Modal> */}
 
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <TextField
-          fullWidth
-          placeholder={"Search recipes by..."}
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            searchItem(e.target.value);
-          }}
-          InputProps={{
-            type: "search",
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-        />
+        {searchtype == "byname" ? (
+          <TextField
+            fullWidth
+            placeholder={"Search recipes by..."}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              searchItem(e.target.value);
+            }}
+            InputProps={{
+              type: "search",
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+        ) : (
+          <TextField
+            fullWidth
+            placeholder={"Search recipes by..."}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              searchIngredient(e.target.value);
+            }}
+            InputProps={{
+              type: "search",
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+        )}
 
         <Select
           labelId="demo-simple-select-label"

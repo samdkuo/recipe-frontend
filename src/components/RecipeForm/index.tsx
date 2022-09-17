@@ -34,6 +34,7 @@ export function RecipeForm({
   addRecipe,
   updateRecipeState,
   onClose,
+  buttonHandler,
   update,
   rid,
   name,
@@ -117,6 +118,7 @@ export function RecipeForm({
         }
       });
     } else {
+      buttonHandler();
       console.log(selectedImage);
       console.log("is updating " + update);
       console.log(data);
@@ -231,7 +233,7 @@ export function RecipeForm({
                   <IngredientButton
                     name={name}
                     quantity={quantity}
-                    description={adjective}
+                    adjective={adjective}
                     unit={unit}
                   />
                   <Button
@@ -284,6 +286,7 @@ export function RecipeForm({
         </Stack>
       </DialogContent>
       <DialogActions>
+        <Button onClick={buttonHandler}>Cancel</Button>
         <Button onClick={handleSubmit}>Submit</Button>
       </DialogActions>
     </div>

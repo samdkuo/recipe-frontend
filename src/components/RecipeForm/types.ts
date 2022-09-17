@@ -7,6 +7,7 @@ export interface RecipeFormProps {
   cooktime: any;
   image: string;
   addRecipe: (data: any) => void;
+  buttonHandler: VoidFunction;
   updateRecipeState: (data: any, rid: number) => void;
   updateRecipeImage: (recipe: number, imagepath: string) => void;
   onClose: VoidFunction;
