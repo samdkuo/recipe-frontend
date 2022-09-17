@@ -298,7 +298,9 @@ const Home = () => {
           description={""}
           instruction={""}
           cooktime={""}
-          buttonHandler={onClose} />
+          buttonHandler={onClose} updateIngState={function (data: any): void {
+            throw new Error("Function not implemented.");
+          }} />
       </Dialog>
       {/* </Box>
       </Modal> */}
@@ -385,7 +387,6 @@ const Home = () => {
               key={index}
               id={id}
               title={name}
-              totalIngredients={totalIngredients}
               cookTime={cooktime}
               image={image}
               description={description}

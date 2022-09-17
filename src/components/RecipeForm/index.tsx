@@ -35,6 +35,7 @@ export function RecipeForm({
   updateRecipeState,
   onClose,
   buttonHandler,
+  updateIngState,
   update,
   rid,
   name,
@@ -126,6 +127,7 @@ export function RecipeForm({
         postIngredient(ingridient, rid);
         console.log("ingredient posted in form");
       });
+      updateIngState(ingredients);
       if (!selectedImage) {
         updateRecipeState({ ...data, image: image }, rid);
       } else {

@@ -44,13 +44,12 @@ interface RecipeCardProps {
 interface Ingredient {
   name: string;
   quantity: number;
-  description: string;
-  units: string;
+  adjective: string;
+  unit: string;
 }
 export function RecipeCard({
   id,
   title,
-  totalIngredients = [],
   cookTime,
   description,
   instruction,
@@ -61,17 +60,15 @@ export function RecipeCard({
   image,
 }: RecipeCardProps) {
   const { visible, onClose, onOpen } = useModalState();
-  const [ingredients, setIngredients] = React.useState([]);
+  const [ingredients, setIngredients] = useState<
+    Array<Ingredient>
+  >([]);
   React.useEffect(() => {
     fetchRecipeIngredients(id).then((response: any) => {
       console.log(response);
       if (response) {
         setIngredients(response);
       }
-      totalIngredients = [
-        { name: "bagel", quantity: 3, description: "", units: "" },
-      ];
-      console.log(totalIngredients);
     });
   }, [id]);
 
@@ -82,6 +79,12 @@ export function RecipeCard({
     deleteRecipeImage(delid);
   };
 
+  const updateIngState = useCallback(
+    (ingr: Ingredient[]) => {
+      setIngredients(ingr);
+    },
+    [setIngredients]
+  );
 
   const [isUpdating, setIsUpdating] = useState(false);
   const buttonHandler = () => {
@@ -194,6 +197,7 @@ export function RecipeCard({
               addRecipe={deleteRecipe}
               updateRecipeState={updateRecipeState}
               updateRecipeImage={updateRecipeImage}
+              updateIngState={updateIngState}
               onClose={onClose}
               update={true}
               buttonHandler={buttonHandler}
