@@ -84,7 +84,10 @@ export function RecipeForm({
     [ingredientsList, ingredients]
   );
 
+  const [selectedImage, setSelectedImage] = useState<any | null>(null);
+
   const handleClick = (rid: number, delid: string) => {
+    console.log(selectedImage);
     const newlist = ingredients.filter((item: { name: string; }) => item.name !== delid);
     setIngredients(newlist);
     deleteIngrediant(rid, delid)
@@ -94,6 +97,7 @@ export function RecipeForm({
 
   const handleSubmit = useCallback(() => {
     const data = { ...recipe, Label: { id: recipe.label } };
+    console.log(selectedImage);
     console.log(data);
     if (!update) {
       postRecipe(data).then((response: any) => {
@@ -120,7 +124,6 @@ export function RecipeForm({
       });
     } else {
       buttonHandler();
-      console.log(selectedImage);
       console.log("is updating " + update);
       console.log(data);
       ingredientsList.map((ingridient) => {
@@ -146,6 +149,7 @@ export function RecipeForm({
     }
     handleClose();
   }, [
+    selectedImage,
     recipe,
     ingredientsList,
     rid,
@@ -155,7 +159,6 @@ export function RecipeForm({
     handleClose,
   ]);
 
-  const [selectedImage, setSelectedImage] = useState<any | null>(null);
   React.useEffect(() => {
     fetchRecipeIngredients(rid).then((response: any) => {
       console.log(response);
