@@ -34,6 +34,7 @@ interface Recipe {
   instruction: string;
   cooktime: number;
   image: string;
+  label: label;
 }
 
 interface Ingredient {
@@ -42,6 +43,12 @@ interface Ingredient {
   description: string;
   units: string;
 }
+
+interface label {
+  id: number;
+  name: string;
+}
+
 
 interface Image {
   recipe_id: number;
@@ -299,6 +306,7 @@ const Home = () => {
           description={""}
           instruction={""}
           cooktime={""}
+          label={""}
           buttonHandler={onClose} updateIngState={function (data: any): void {
             throw new Error("Function not implemented.");
           }} />
@@ -372,12 +380,12 @@ const Home = () => {
           (
             {
               name,
-              totalIngredients,
               cooktime,
               image,
               id,
               description,
               instruction,
+              label,
             },
             index
           ) => (
@@ -390,6 +398,7 @@ const Home = () => {
               title={name}
               cookTime={cooktime}
               image={image}
+              label={label.name}
               description={description}
               instruction={instruction}
             />

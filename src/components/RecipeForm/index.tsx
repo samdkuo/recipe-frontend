@@ -39,20 +39,22 @@ export function RecipeForm({
   update,
   rid,
   name,
+  label,
   description,
   instruction,
   cooktime,
   image,
 }: RecipeFormProps) {
   const initialValues = useMemo(() => {
+    console.log(label);
     return {
       name: name ? name : "",
       description: description ? description : "",
       instruction: instruction ? instruction : "",
       cooktime: cooktime ? cooktime : "",
-      label: "",
+      label: label ? label : "",
     };
-  }, [name, description, instruction, cooktime]);
+  }, [name, description, instruction, cooktime, label]);
 
   const [ingredientsList, setIngredientsList] = useState<
     Array<IngredientProps>
@@ -152,6 +154,7 @@ export function RecipeForm({
     selectedImage,
     recipe,
     ingredientsList,
+    ingredients,
     rid,
     update,
     addRecipe,
@@ -267,7 +270,7 @@ export function RecipeForm({
             name="cooktime"
             id="cooktime"
             variant="outlined"
-            label="Cooktime (mins)"
+            label="Total Time (mins)"
             value={recipe.cooktime}
             onChange={handleChange}
             type="number"

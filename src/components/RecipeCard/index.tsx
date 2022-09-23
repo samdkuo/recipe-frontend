@@ -36,6 +36,7 @@ interface RecipeCardProps {
   image: string;
   description?: string;
   instruction?: string;
+  label: string;
   deleteRstate: (data: any) => void;
   updateRecipeState: (data: any, recipe: number) => void;
   updateRecipeImage: (recipe: number, imagepath: string) => void;
@@ -53,6 +54,7 @@ export function RecipeCard({
   cookTime,
   description,
   instruction,
+  label,
   deleteRstate,
   updateRecipeState,
   updateRecipeImage,
@@ -109,7 +111,7 @@ export function RecipeCard({
           )}
           <Header type="title2">{title}</Header>
           <div>
-            <label>{`Cook Time: ${cookTime}`}</label>
+            <label>{`Total Time: ${cookTime} min`}</label>
           </div>
         </div>
       </Button>
@@ -191,6 +193,15 @@ export function RecipeCard({
                 id="instruction"
                 sx={{ mt: 2 }}
               >{`${instruction}`}</Typography>
+
+
+              <Header class="Label" type="title4">
+                Label
+              </Header>
+              <Typography
+                id="label"
+                sx={{ mt: 2 }}
+              >{`${label}`}</Typography>
             </Box>
           ) : (<>
             <RecipeForm
@@ -204,6 +215,7 @@ export function RecipeCard({
               rid={id}
               name={title}
               image={image}
+              label={label}
               description={description}
               instruction={instruction}
               cooktime={cookTime} />

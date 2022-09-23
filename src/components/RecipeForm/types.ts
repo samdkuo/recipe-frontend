@@ -6,6 +6,7 @@ export interface RecipeFormProps {
   instruction: any;
   cooktime: any;
   image: string;
+  label: string;
   addRecipe: (data: any) => void;
   buttonHandler: VoidFunction;
   updateIngState: (data: any) => void;
@@ -21,6 +22,12 @@ export interface RecipeProps {
   ingredients: Array<IngredientProps>;
   instruction: string;
   cooktime: string;
+  label: string;
+}
+
+export interface label{
+  name:string;
+  id: number;
 }
 
 export interface IngredientProps {
