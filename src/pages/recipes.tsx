@@ -6,6 +6,7 @@ import {
   fetchRecipeEntries,
   fetchRecipeFromIngredient,
   fetchrecipeimage,
+  searchLabels,
   SearchRecipeEntries,
 } from "../requests/recipe";
 import { Grid, Item } from "semantic-ui-react";
@@ -20,7 +21,7 @@ import {
   Dialog,
 } from "@mui/material";
 import configData from "../config.json";
-
+import { labels } from "../components/RecipeForm/types";
 import { Search } from "@mui/icons-material";
 
 import { Button } from "../components";
@@ -62,6 +63,7 @@ const Home = () => {
   const [searchtype, setsearchtype] = React.useState("byname");
   const { small, medium } = useWindowDimensionsQuery();
   const { visible, onClose, onOpen } = useModalState();
+  const [labelval, setLabel] = React.useState("");
 
   React.useEffect(() => {
     fetchrecipeimage().then((images: Image[]) => {
@@ -216,6 +218,7 @@ const Home = () => {
       });
     }
   };
+
   const searchIngredient = (query: any) => {
     if (query !== "" && query.length > 2) {
       console.log(query);
@@ -264,6 +267,92 @@ const Home = () => {
       });
     }
   };
+
+  const searchLabel = (selectlabel: string) => {
+    if (selectlabel !== "") {
+      fetchrecipeimage().then((images: Image[]) => {
+        if (images) {
+          console.log(images);
+          searchLabels(selectlabel).then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
+                }
+              }
+              const clear = recipes.filter((item) => item.id <= 0);
+              setRecipes(clear);
+              console.log(response);
+              setRecipes(response);
+            }
+          });
+        }
+      });
+    }
+  };
+
+  let searchbar;
+  if (searchtype == "byname") {
+    searchbar = <TextField
+      fullWidth
+      placeholder={"Search recipes by..."}
+      value={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+        searchItem(e.target.value);
+      }}
+      InputProps={{
+        type: "search",
+        startAdornment: (
+          <InputAdornment position="start">
+            <Search />
+          </InputAdornment>
+        ),
+      }}
+    />
+  } else if (searchtype == "bying") {
+    searchbar = <TextField
+      fullWidth
+      placeholder={"Search recipes by..."}
+      value={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+        searchIngredient(e.target.value);
+      }}
+      InputProps={{
+        type: "search",
+        startAdornment: (
+          <InputAdornment position="start">
+            <Search />
+          </InputAdornment>
+        ),
+      }}
+    />
+  } else {
+    searchbar = <TextField
+      name="label"
+      id="label"
+      label="Label"
+      value={labelval}
+      onChange={(e) => {
+        setLabel(e.target.value);
+        searchLabel(e.target.value);
+      }
+      }
+      select
+      fullWidth
+    >
+      {labels.map((label, index) => (
+        <MenuItem key={index} value={label.value}>
+          {label.name}
+        </MenuItem>
+      ))}
+    </TextField>
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {/* <Button
@@ -306,7 +395,7 @@ const Home = () => {
           description={""}
           instruction={""}
           cooktime={""}
-          label={""}
+          labelid={0}
           buttonHandler={onClose} updateIngState={function (data: any): void {
             throw new Error("Function not implemented.");
           }} />
@@ -315,43 +404,7 @@ const Home = () => {
       </Modal> */}
 
       <div style={{ display: "flex", flexDirection: "row" }}>
-        {searchtype == "byname" ? (
-          <TextField
-            fullWidth
-            placeholder={"Search recipes by..."}
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              searchItem(e.target.value);
-            }}
-            InputProps={{
-              type: "search",
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-        ) : (
-          <TextField
-            fullWidth
-            placeholder={"Search recipes by..."}
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              searchIngredient(e.target.value);
-            }}
-            InputProps={{
-              type: "search",
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-        )}
+        {searchbar}
 
         <Select
           labelId="demo-simple-select-label"
@@ -360,8 +413,9 @@ const Home = () => {
           onChange={choosesearch}
           style={{ marginLeft: 4, width: 180 }}
         >
-          <MenuItem value={"byname"}>name</MenuItem>
-          <MenuItem value={"bying"}>ingredients</MenuItem>
+          <MenuItem value={"byname"}>Name</MenuItem>
+          <MenuItem value={"bying"}>Ingredients</MenuItem>
+          <MenuItem value={"bylabel"}>Label</MenuItem>
         </Select>
       </div>
 
@@ -398,7 +452,8 @@ const Home = () => {
               title={name}
               cookTime={cooktime}
               image={image}
-              label={label.name}
+              labelname={label.name}
+              labelid={label.id}
               description={description}
               instruction={instruction}
             />

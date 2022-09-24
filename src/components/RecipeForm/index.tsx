@@ -39,22 +39,22 @@ export function RecipeForm({
   update,
   rid,
   name,
-  label,
+  labelid,
   description,
   instruction,
   cooktime,
   image,
 }: RecipeFormProps) {
   const initialValues = useMemo(() => {
-    console.log(label);
+    console.log(labelid);
     return {
       name: name ? name : "",
       description: description ? description : "",
       instruction: instruction ? instruction : "",
       cooktime: cooktime ? cooktime : "",
-      label: label ? label : "",
+      labelid: labelid ? labelid : 0,
     };
-  }, [name, description, instruction, cooktime, label]);
+  }, [name, description, instruction, cooktime, labelid]);
 
   const [ingredientsList, setIngredientsList] = useState<
     Array<IngredientProps>
@@ -88,6 +88,7 @@ export function RecipeForm({
 
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
 
+
   const handleClick = (rid: number, delid: string) => {
     console.log(selectedImage);
     const newlist = ingredients.filter((item: { name: string; }) => item.name !== delid);
@@ -98,7 +99,7 @@ export function RecipeForm({
   };
 
   const handleSubmit = useCallback(() => {
-    const data = { ...recipe, Label: { id: recipe.label } };
+    const data = { ...recipe, Label: { id: recipe.labelid } };
     console.log(selectedImage);
     console.log(data);
     if (!update) {
@@ -280,7 +281,7 @@ export function RecipeForm({
             name="label"
             id="label"
             label="Label"
-            value={recipe.label}
+            value={recipe.labelid}
             onChange={handleChange}
             select
             fullWidth

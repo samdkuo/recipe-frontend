@@ -6,7 +6,7 @@ export interface RecipeFormProps {
   instruction: any;
   cooktime: any;
   image: string;
-  label: string;
+  labelid: number;
   addRecipe: (data: any) => void;
   buttonHandler: VoidFunction;
   updateIngState: (data: any) => void;

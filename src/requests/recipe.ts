@@ -290,3 +290,17 @@ export const updateRecipeimage = (rid:number, url:string) => {
       console.log("error: ", error);
     });
 };
+
+export const searchLabels = (lid:string) => {
+  const api = serverURL;
+  const recipe = `${api}/label/${lid}/recipe`;
+  return axios
+  .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+  .then((response) => {
+    console.log("successful recipe name search");
+    return response.data;
+  })
+  .catch((error) => {
+    console.log("error: ", error);
+  });
+};
