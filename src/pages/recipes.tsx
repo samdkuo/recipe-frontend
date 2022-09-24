@@ -194,7 +194,7 @@ const Home = () => {
           });
         }
       });
-    } else {
+    } else if (query == "") {
       fetchrecipeimage().then((images: Image[]) => {
         if (images) {
           console.log(images);
@@ -243,7 +243,7 @@ const Home = () => {
           });
         }
       });
-    } else {
+    } else if (query == "") {
       fetchrecipeimage().then((images: Image[]) => {
         if (images) {
           console.log(images);
@@ -296,6 +296,7 @@ const Home = () => {
 
   let searchbar;
   if (searchtype == "byname") {
+    setLabel("");
     searchbar = <TextField
       fullWidth
       placeholder={"Search recipes by..."}
@@ -314,6 +315,7 @@ const Home = () => {
       }}
     />
   } else if (searchtype == "bying") {
+    setLabel("");
     searchbar = <TextField
       fullWidth
       placeholder={"Search recipes by..."}
