@@ -135,6 +135,7 @@ const Home = () => {
             description: entry.description,
             instruction: entry.instruction,
             cooktime: entry.cooktime,
+            label: entry.Label,
             image: entry.image
           };
         }
@@ -296,12 +297,12 @@ const Home = () => {
 
   let searchbar;
   if (searchtype == "byname") {
-    setLabel("");
     searchbar = <TextField
       fullWidth
       placeholder={"Search recipes by..."}
       value={value}
       onChange={(e) => {
+        setLabel("");
         setValue(e.target.value);
         searchItem(e.target.value);
       }}
@@ -315,12 +316,12 @@ const Home = () => {
       }}
     />
   } else if (searchtype == "bying") {
-    setLabel("");
     searchbar = <TextField
       fullWidth
       placeholder={"Search recipes by..."}
       value={value}
       onChange={(e) => {
+        setLabel("");
         setValue(e.target.value);
         searchIngredient(e.target.value);
       }}

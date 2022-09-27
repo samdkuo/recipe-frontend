@@ -171,6 +171,7 @@ export const updateRecipe = (entry: any, recipeId: number) => {
       description: entry.description,
       instruction: entry.instruction,
       cooktime: entry.cooktime,
+      label: entry.Label,
     },
      { headers: { "Jwt-Token": "" } })
     .then((response) => {

@@ -52,7 +52,7 @@ export function RecipeForm({
       description: description ? description : "",
       instruction: instruction ? instruction : "",
       cooktime: cooktime ? cooktime : "",
-      labelid: labelid ? labelid : 0,
+      label: labelid ? labelid : 0,
     };
   }, [name, description, instruction, cooktime, labelid]);
 
@@ -70,6 +70,7 @@ export function RecipeForm({
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const data = event.target;
+      console.log(data);
       setRecipe({ ...recipe, [data.name]: data.value });
     },
     [recipe]
@@ -99,7 +100,9 @@ export function RecipeForm({
   };
 
   const handleSubmit = useCallback(() => {
-    const data = { ...recipe, Label: { id: recipe.labelid } };
+    const lname = labels.filter((item) => item.value == recipe.label);
+    console.log(lname);
+    const data = { ...recipe, Label: { id: recipe.label, name: lname[0].name } };
     console.log(selectedImage);
     console.log(data);
     if (!update) {
@@ -281,7 +284,7 @@ export function RecipeForm({
             name="label"
             id="label"
             label="Label"
-            value={recipe.labelid}
+            value={recipe.label}
             onChange={handleChange}
             select
             fullWidth
