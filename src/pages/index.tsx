@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useWindowDimensionsQuery } from "../hooks";
-import { Chip, TextField, Grid } from "@mui/material";
+import { Chip, TextField, Grid, Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
@@ -14,6 +14,12 @@ const Home = () => {
     let path = `Recipes`;
     history.push(path);
   }
+
+  const handleLogin = () => {
+    let path = `Login`;
+    history.push(path);
+  };
+
   const [value, setValue] = useState("");
 
   const { small } = useWindowDimensionsQuery();

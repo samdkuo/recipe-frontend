@@ -19,12 +19,14 @@ import {
   MenuItem,
   SelectChangeEvent,
   Dialog,
+  DialogTitle,
 } from "@mui/material";
 import configData from "../config.json";
 import { labels } from "../components/RecipeForm/types";
 import { Search } from "@mui/icons-material";
 
 import { Button } from "../components";
+import { useHistory } from "react-router-dom";
 
 interface Recipe {
   filter(recipe: Recipe): React.SetStateAction<Recipe[]>;
@@ -135,7 +137,7 @@ const Home = () => {
             description: entry.description,
             instruction: entry.instruction,
             cooktime: entry.cooktime,
-            label: entry.Label,
+            label: entry.label,
             image: entry.image
           };
         }
@@ -356,35 +358,24 @@ const Home = () => {
     </TextField>
   }
 
+  const history = useHistory();
+  const handleLogin = () => {
+    let path = `Login`;
+    history.push(path);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      {/* <Button
-        style={{ alignSelf: "flex-end", width: 148, marginBottom: 16 }}
-        variant="contained"
-        onClick={onOpen}
-      >
-        Add Recipe +
-      </Button>
-      <Modal open={visible} onClose={onClose}>
-        <Box
-          className="modalBox"
-          sx={{
-            position: "absolute",
-            overflowY: "scroll",
-            width: "80%",
-            height: "80%",
-            margin: "auto",
-            // marginLeft: "10%",
-            // marginTop: -13,
-          }}
-        > */}
-      <Button
-        style={{ width: 148, marginBottom: 16 }}
-        variant="contained"
-        onClick={onOpen}
-      >
-        Add Recipe +
-      </Button>
+      {localStorage.getItem("jwt") ?
+        <Button
+          style={{ width: 148, marginBottom: 5 }}
+          variant="contained"
+          onClick={onOpen}
+        >
+          Add Recipe +
+        </Button>
+        : ""
+      }
       <Dialog maxWidth="md" open={visible} onClose={onClose}>
         <RecipeForm
           addRecipe={addRecipe}

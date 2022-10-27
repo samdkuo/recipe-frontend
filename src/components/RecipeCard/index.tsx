@@ -162,6 +162,22 @@ export function RecipeCard({
                   >
                     Delete
                   </Button>
+                  {localStorage.getItem("jwt") ?
+                    <Button
+                      style={{
+                        position: "sticky",
+                        left: "48%",
+                        width: "20%",
+                        height: "5%",
+                        backgroundColor: "#67c4fc",
+                        color: "white",
+                      }}
+                    >
+                      Add to Planner
+                    </Button>
+                    :
+                    ""
+                  }
                 </DialogTitle>
               </Typography>
               {selectedImage ? (

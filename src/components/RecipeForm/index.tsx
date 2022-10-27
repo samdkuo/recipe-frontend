@@ -70,7 +70,6 @@ export function RecipeForm({
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const data = event.target;
-      console.log(data);
       setRecipe({ ...recipe, [data.name]: data.value });
     },
     [recipe]
@@ -102,13 +101,13 @@ export function RecipeForm({
   const handleSubmit = useCallback(() => {
     const lname = labels.filter((item) => item.value == recipe.label);
     console.log(lname);
-    const data = { ...recipe, Label: { id: recipe.label, name: lname[0].name } };
+    const data = { ...recipe, label: { id: recipe.label, name: lname[0].name } };
     console.log(selectedImage);
     console.log(data);
     if (!update) {
       postRecipe(data).then((response: any) => {
         console.log(response);
-        if (!selectedImage) {
+        if (!selectedImage && response != undefined) {
           addRecipe({ ...data, id: response, image: image });
           ingredientsList.map((ingredient) => {
             postIngredient(ingredient, response);

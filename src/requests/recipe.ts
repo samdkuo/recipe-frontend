@@ -1,5 +1,6 @@
 import axios from "axios";
-const serverURL = "http://localhost:3000/api/v1";
+import { accountTypes } from "../constants/actionTypes";
+const serverURL = "http://localhost:3000/api/v1";;
 
 export const getRecipeURL = (entry_id = null) => {
   const api = serverURL;
@@ -70,6 +71,7 @@ export const fetchRecipeDAI = (recipeId: number) => {
 
 export const postRecipe = (entry: any) => {
   console.log(entry);
+  const jwttext = "" + localStorage.getItem("jwt")
   const api = serverURL;
   const recipe = `${api}/recipe`;
   return axios
@@ -80,9 +82,9 @@ export const postRecipe = (entry: any) => {
         description: entry.description,
         instruction: entry.instruction,
         cooktime: entry.cooktime,
-        Label: entry.Label,
+        label: entry.label,
       },
-      { headers: { "Jwt-Token": "" } }
+      { headers: { "jwt-token": jwttext} }
     )
     .then((response) => {
       console.log("successful post");
@@ -92,6 +94,35 @@ export const postRecipe = (entry: any) => {
       console.log("error: ", error);
     });
 };
+
+// use in login to validate
+// check everytime user clicks around the website?
+// check after the time limit is up? 
+export const verifyAccountInfo = (accountId: string, jwtToken: string) => {
+  const api = serverURL;
+  const url = `${api}/account/accountID/${accountId}`;
+  console.log(url);
+    return axios
+    .get(url , {headers:{ "Jwt-Token": jwtToken}})
+    .then(response => {
+      console.log("sucessful get: jwt", accountId, jwtToken);
+      setAccountInfo(accountId, jwtToken);
+      return true;
+    })
+    .catch(function(error) {
+      console.log("error in get account info:", error);
+      //dispatch(signout()) 
+      return false; 
+    });
+}
+
+export const setAccountInfo = async (id: string, jwt: string) => {
+  await localStorage.setItem("jwt", jwt);
+  localStorage.setItem("id", id);
+  console.log("account info set")
+  return { type: accountTypes.VERIFIED, id: id, jwt: jwt, verified: true};
+};
+
 
 export const postIngredient = (entry: any, rid:number) => {
   console.log(entry);
@@ -120,9 +151,9 @@ export const postIngredient = (entry: any, rid:number) => {
 export const deleteRecipe = (recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe`;
-
+  const jwttext = "" + localStorage.getItem("jwt")
   return axios
-    .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": "" } })
+    .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": jwttext } })
     .then((response) => {
       console.log("successful delete");
       return response.data;
@@ -135,9 +166,9 @@ export const deleteRecipe = (recipeId: number) => {
 export const deleteRecipeImage = (recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe_image`;
-
+  const jwttext = "" + localStorage.getItem("jwt")
   return axios
-    .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": "" } })
+    .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": jwttext } })
     .then((response) => {
       console.log("successful delete");
       return response.data;
@@ -171,7 +202,7 @@ export const updateRecipe = (entry: any, recipeId: number) => {
       description: entry.description,
       instruction: entry.instruction,
       cooktime: entry.cooktime,
-      label: entry.Label,
+      label: entry.label,
     },
      { headers: { "Jwt-Token": "" } })
     .then((response) => {
@@ -304,4 +335,29 @@ export const searchLabels = (lid:string) => {
   .catch((error) => {
     console.log("error: ", error);
   });
+};
+
+export const Login = (email:string, password:string) => {
+  console.log(email + " " + password);
+  const api = serverURL;
+  const recipe = `${api}/login`;
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        email: email,
+        password: password,
+      },
+      { headers: { "Jwt-Token": "" } }
+    )
+    .then((response) => {
+      console.log("sucessful post: login");
+      const accountId = response.data[0].id;
+      const jwtToken = response.headers["jwt-token"];
+      console.log(accountId + " " + jwtToken); 
+      verifyAccountInfo(accountId, jwtToken)
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
 };
