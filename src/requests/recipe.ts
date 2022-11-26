@@ -98,7 +98,7 @@ export const postRecipe = (entry: any) => {
 // use in login to validate
 // check everytime user clicks around the website?
 // check after the time limit is up? 
-export const verifyAccountInfo = (accountId: string, jwtToken: string) => {
+export const verifyAccountInfo = (accountId: number, jwtToken: string) => {
   const api = serverURL;
   const url = `${api}/account/accountID/${accountId}`;
   console.log(url);
@@ -116,9 +116,9 @@ export const verifyAccountInfo = (accountId: string, jwtToken: string) => {
     });
 }
 
-export const setAccountInfo = async (id: string, jwt: string) => {
+export const setAccountInfo = async (id: number, jwt: string) => {
   await localStorage.setItem("jwt", jwt);
-  localStorage.setItem("id", id);
+  localStorage["id"] = id;
   console.log("account info set")
   return { type: accountTypes.VERIFIED, id: id, jwt: jwt, verified: true};
 };
@@ -356,6 +356,144 @@ export const Login = (email:string, password:string) => {
       const jwtToken = response.headers["jwt-token"];
       console.log(accountId + " " + jwtToken); 
       verifyAccountInfo(accountId, jwtToken)
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const posttoplanner = (rid:number, rnum:number) => {
+  console.log(rid + " " + rnum);
+  const api = serverURL;
+  const recipe = `${api}/recipe_image`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        day_id: 1,
+        recipe_id: rnum
+      },
+      { headers: { "Jwt-Token":jwttext } }
+    )
+    .then((response) => {
+      console.log("successful recipe_image post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const postshoppinglist = (name:string) => {
+  console.log(localStorage["id"]  + " " + name);
+  const api = serverURL;
+  const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        name:name
+      },
+      { headers: { "Jwt-Token": jwttext } }
+    )
+    .then((response) => {
+      console.log("successful shopping_list post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const postshoppinglisting = (entry: any) => {
+  console.log(entry);
+  const api = serverURL;
+  const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        name: entry.name,
+        unit: entry.unit,
+        adjective: entry.adjective,
+        quantity: entry.quantity,
+      },
+      { headers: { "Jwt-Token": jwttext } }
+    )
+    .then((response) => {
+      console.log("successful shopping_list post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+export const postshoppingrecipe = (shid:number, rid:number) => {
+  console.log(shid + " " + rid);
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_recipe`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .post(
+      `${recipe}`,
+      {
+        shopping_list_id:shid,
+        recipe_id:rid
+      },
+      { headers: { "Jwt-Token": jwttext } }
+    )
+    .then((response) => {
+      console.log("successful postshoppingrecipe post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const fetchShoppinglist = () => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful shopping_list search");
+      console.log(response.data)
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const fetchShoppinglistingredients = (shid: number) => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_ingredient_all/${shid}`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful shopping_list search");
+      console.log(response.data)
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const deleteShoppinglist = (shid: number) => {
+  console.log(shid);
+  const api = serverURL;
+  const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .delete(`${recipe}/${shid}`, { headers: { "Jwt-Token": jwttext } })
+    .then((response) => {
+      console.log("successful delete");
+      return response.data;
     })
     .catch((error) => {
       console.log("error: ", error);

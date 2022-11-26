@@ -23,7 +23,11 @@ const Navigation = ({ routes }: { routes: any }) => {
     history.push(path);
     console.log(window.location.href);
   };
-
+  const handleRecipes = () => {
+    let path = `recipes`;
+    history.push(path);
+    console.log(window.location.href);
+  };
   const handleLogout = () => {
     localStorage.setItem("jwt", "")
     let path = ``;
@@ -46,7 +50,7 @@ const Navigation = ({ routes }: { routes: any }) => {
       <ReactLink to="/">
         <img src="images/fried-egg.png" style={{ width: 40, height: 40 }} />
       </ReactLink>
-      {localStorage.getItem("jwt") || (loginon && window.location.href !== "http://localhost:8080/Login") ?
+      {localStorage.getItem("jwt") ?
         <><Button
           style={{ width: 148, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
           variant="contained"
@@ -56,18 +60,32 @@ const Navigation = ({ routes }: { routes: any }) => {
         </Button><Button
           style={{ width: 148, right: 10, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
           variant="contained"
-          onClick={handleCalendar}
+          onClick={handleRecipes}
         >
-            Calendar
+            Recipes
+          </Button><Button
+            style={{ width: 148, right: 20, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
+            variant="contained"
+            onClick={handleCalendar}
+          >
+            Shopping Lists
           </Button></>
         : window.location.href !== "http://localhost:8080/Login" ? (
-          <Button
-            style={{ width: 148, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
-            variant="contained"
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
+          <div>
+            <Button
+              style={{ width: 148, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
+              variant="contained"
+              onClick={handleLogin}
+            >
+              Login
+            </Button><Button
+              style={{ width: 148, right: 10, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
+              variant="contained"
+              onClick={handleRecipes}
+            >
+              Recipes
+            </Button>
+          </div>
         ) : null
       }
 

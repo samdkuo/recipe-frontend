@@ -7,6 +7,7 @@ const Home = () => {
   const history = useHistory();
   const handleClick = () => {
     let path = `Recipes`;
+    console.log(localStorage.getItem("jwt"));
     history.push(path);
   };
 

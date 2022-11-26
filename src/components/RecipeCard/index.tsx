@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  MenuItem,
 } from "@mui/material";
 import { useModalState } from "../../hooks";
 import {
@@ -17,6 +18,7 @@ import {
   deleteRecipe,
   deleteRecipeImage,
   fetchRecipeIngredients,
+  fetchShoppinglist,
   postimage,
   postIngredient,
   postRecipeimage,
@@ -49,6 +51,12 @@ interface Ingredient {
   adjective: string;
   unit: string;
 }
+
+interface Shopping_list {
+  name: string;
+  id: number;
+}
+
 export function RecipeCard({
   id,
   title,
@@ -67,11 +75,21 @@ export function RecipeCard({
   const [ingredients, setIngredients] = useState<
     Array<Ingredient>
   >([]);
+  const [shopping_lists, setshopping_lists] = useState<
+    Shopping_list[]
+  >([]);
+
   React.useEffect(() => {
     fetchRecipeIngredients(id).then((response: any) => {
       console.log(response);
       if (response) {
         setIngredients(response);
+      }
+    });
+    fetchShoppinglist().then((response: any) => {
+      if (response) {
+        console.log(response);
+        setshopping_lists(response);
       }
     });
   }, [id]);
@@ -95,7 +113,10 @@ export function RecipeCard({
     setIsUpdating((current) => !current);
   };
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
-
+  interface label {
+    name: string;
+    id: number;
+  }
   return (
     <div>
       <Button onClick={onOpen}>
@@ -163,20 +184,28 @@ export function RecipeCard({
                     Delete
                   </Button>
                   {localStorage.getItem("jwt") ?
-                    <Button
+                    <TextField
+                      name="shopping_list"
+                      id="shopping_list"
+                      label="Shopping_list"
+                      select
                       style={{
                         position: "sticky",
-                        left: "48%",
+                        left: "45%",
                         width: "20%",
-                        height: "5%",
-                        backgroundColor: "#67c4fc",
-                        color: "white",
+                        height: "5%"
                       }}
                     >
-                      Add to Planner
-                    </Button>
-                    :
-                    ""
+                      <MenuItem >
+                        New List+
+                      </MenuItem>
+                      {shopping_lists.map((label, id) => (
+                        <MenuItem key={id} value={label.name}>
+                          {label.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    : null
                   }
                 </DialogTitle>
               </Typography>
