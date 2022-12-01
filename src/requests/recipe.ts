@@ -499,3 +499,25 @@ export const deleteShoppinglist = (shid: number) => {
       console.log("error: ", error);
     });
 };
+
+export const updateShoppinglist = (name:string,shid:number) => {
+  console.log(localStorage["id"]  + " " + name);
+  const api = serverURL;
+  const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .put(
+      `${recipe}/${shid}`,
+      {
+        name:name
+      },
+      { headers: { "Jwt-Token": jwttext } }
+    )
+    .then((response) => {
+      console.log("successful shopping_list post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};

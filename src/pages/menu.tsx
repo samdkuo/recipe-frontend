@@ -126,6 +126,7 @@ const Home = () => {
                 }}>
                 <ShoppingListButton
                   name={name}
+                  id={id}
                 />
                 <Button
                   onClick={() => {

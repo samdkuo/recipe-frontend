@@ -193,7 +193,9 @@ export function RecipeCard({
                         position: "sticky",
                         left: "45%",
                         width: "20%",
-                        height: "5%"
+                        height: "5%",
+                        backgroundColor: "#67c4fc",
+                        color: "white"
                       }}
                     >
                       <MenuItem >

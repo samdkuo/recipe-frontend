@@ -11,11 +11,13 @@ import { Shownrecipe } from "../Shownrecipe";
 
 interface Shopping_list {
   name: string;
+  id: number
 }
 
 export function ShoppingListButton(
   {
-    name
+    name,
+    id
   }: Shopping_list) {
   const [buttonname, setbname] = useState("" + name);
   const { visible, onClose, onOpen } = useModalState();
@@ -46,12 +48,11 @@ export function ShoppingListButton(
         fullWidth
         maxWidth="md"
         open={visible}
-        onClose={() => {
-          onClose();
-        }}
         aria-labelledby="recipe-name"
       >
+        <Shownrecipe
+          onClose={onClose} name={"example"} id={id} />
       </Dialog>
-    </MuiButton>
+    </MuiButton >
   );
 }

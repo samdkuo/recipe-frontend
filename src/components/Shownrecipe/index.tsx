@@ -4,17 +4,20 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { deleteShoppinglist, updateShoppinglist } from "../../requests/recipe";
 
 
 interface Shopping_list {
   name: string;
-  buttonHandler: VoidFunction;
+  id: number;
+  onClose: VoidFunction;
 }
 
 export function Shownrecipe(
   {
     name,
-    buttonHandler
+    id,
+    onClose
   }: Shopping_list) {
   const [buttonname, setbname] = useState("" + name);
   const handleChange =
@@ -22,24 +25,48 @@ export function Shownrecipe(
       const data = event.target;
       setbname(data.value);
     };
+  const updateName = (updatedname: string) => {
+    updateShoppinglist(updatedname, id);
+  };
+  const deleteList = () => {
+    deleteShoppinglist(id);
+  };
   return (
-    <MuiButton
+    <><MuiButton
       style={{
         backgroundColor: "white",
         color: "black",
         fontSize: 14
-      }
-      }
+      }}
+      onClick={() => {
+        updateName("updated name");
+      }}
     >
-      <TextField
-        name="name"
-        id="name"
-        variant="outlined"
-        label="Name"
-        style={{ flex: 1, margin: '0 20px 0 0', color: 'white' }}
-        onChange={handleChange}
-        value={buttonname}
-        type="text" />
+      Edit Name
     </MuiButton>
+      <MuiButton
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          fontSize: 14
+        }}
+        onClick={() => {
+          deleteList();
+        }}
+      >
+        Delete List
+      </MuiButton>
+      <MuiButton
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          fontSize: 14
+        }}
+        onClick={() => {
+          onClose();
+        }}
+      >
+        Close
+      </MuiButton></>
   );
 }
