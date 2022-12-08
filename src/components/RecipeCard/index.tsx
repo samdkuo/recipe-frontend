@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogTitle,
   MenuItem,
+  Checkbox,
 } from "@mui/material";
 import { useModalState } from "../../hooks";
 import {
@@ -19,6 +20,7 @@ import {
   deleteRecipeImage,
   fetchRecipeIngredients,
   fetchShoppinglist,
+  fetchShoppinglistrecipe,
   postimage,
   postIngredient,
   postRecipeimage,
@@ -52,11 +54,16 @@ interface Ingredient {
   unit: string;
 }
 
+interface Shopping_list_recipe {
+  id: number;
+  shopping_list_id: number;
+  recipe_id: number;
+}
+
 interface Shopping_list {
   name: string;
   id: number;
 }
-
 export function RecipeCard({
   id,
   title,
@@ -78,6 +85,9 @@ export function RecipeCard({
   const [shopping_lists, setshopping_lists] = useState<
     Shopping_list[]
   >([]);
+  const [shopping_lists_recipe, setshopping_lists_recipe] = useState<
+    Shopping_list_recipe[]
+  >([]);
 
   React.useEffect(() => {
     fetchRecipeIngredients(id).then((response: any) => {
@@ -90,6 +100,12 @@ export function RecipeCard({
       if (response) {
         console.log(response);
         setshopping_lists(response);
+      }
+    });
+    fetchShoppinglistrecipe(id).then((response: any) => {
+      if (response) {
+        console.log(response);
+        setshopping_lists_recipe(response);
       }
     });
   }, [id]);
@@ -107,6 +123,17 @@ export function RecipeCard({
     },
     [setIngredients]
   );
+
+  const isFound = (shid: number) => {
+    shopping_lists_recipe.some(element => {
+      if (element.shopping_list_id === shid) {
+        console.log("match found");
+        return true;
+      }
+
+    });
+    return false;
+  };
 
   const [isUpdating, setIsUpdating] = useState(false);
   const buttonHandler = () => {
@@ -201,8 +228,9 @@ export function RecipeCard({
                       <MenuItem >
                         New List+
                       </MenuItem>
-                      {shopping_lists.map((label, id) => (
-                        <MenuItem key={id} value={label.name}>
+                      {shopping_lists.map((label) => (
+                        <MenuItem key={label.id} value={label.id}>
+                          <Checkbox checked={isFound(label.id)} />
                           {label.name}
                         </MenuItem>
                       ))}

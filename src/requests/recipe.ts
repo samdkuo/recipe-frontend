@@ -1,4 +1,5 @@
 import axios from "axios";
+import { identity } from "lodash-es";
 import { accountTypes } from "../constants/actionTypes";
 const serverURL = "http://localhost:3000/api/v1";;
 
@@ -509,12 +510,28 @@ export const updateShoppinglist = (name:string,shid:number) => {
     .put(
       `${recipe}/${shid}`,
       {
+        id:shid,
         name:name
       },
       { headers: { "Jwt-Token": jwttext } }
     )
     .then((response) => {
       console.log("successful shopping_list post");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const fetchShoppinglistrecipe = (shid: number) => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_recipe/${shid}`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful shopping_list search");
+      console.log(response.data)
       return response.data;
     })
     .catch((error) => {

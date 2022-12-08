@@ -1,5 +1,5 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import { ShoppingListButton } from "../components/ShoppingListButton";
 import { deleteShoppinglist, fetchShoppinglist, postshoppinglist } from "../requests/recipe";
 
@@ -29,23 +29,47 @@ const Home = () => {
     });
   }, []);
 
-  const handleClick = (delid: number, name: string) => {
+  const handleClick = useCallback((delid: number, name: string) => {
     console.log("Delete " + delid);
-    deleteShoppinglist(delid);
+    const clear = shopping_lists.filter((item) => item.id <= 0);
+    setshopping_lists(clear);
     const newlist2 = shopping_lists.filter((item: { name: string; }) => item.name !== name);
     setshopping_lists(newlist2);
-  };
-  let listid = 0;
+  },
+    [shopping_lists, setshopping_lists]
+  );
+
   const addshoppingliststate = (name: string) => {
     postshoppinglist(name).then((response: any) => {
       console.log(response);
-      listid = response;
+      const uid = localStorage["id"];
+      const clear = shopping_lists.filter((item) => item.id <= 0);
+      setshopping_lists(clear);
+      const newShopping_list = { id: response, user_id: uid, name: name };
+      setshopping_lists([...shopping_lists, newShopping_list]);
+      setpressed(true);
     });
-    const uid = localStorage["id"];
-    const newShopping_list = { id: listid, user_id: uid, name: name };
-    setshopping_lists([...shopping_lists, newShopping_list]);
-    setpressed(true);
   };
+
+  const updateshoppingliststate = useCallback((shid: number, name: string) => {
+    console.log(name);
+    const newState = shopping_lists.map((item) => {
+      if (item.id === shid) {
+        return {
+          ...item,
+          name: name,
+        };
+      }
+      return item;
+    });
+    const clear = shopping_lists.filter((item) => item.id <= 0);
+    setshopping_lists(clear);
+    console.log(newState);
+    setshopping_lists(newState);
+  },
+    [shopping_lists, setshopping_lists]
+  );
+
   const handleChange =
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const data = event.target;
@@ -120,20 +144,16 @@ const Home = () => {
                 style={{
                   position: "sticky",
                   left: "0%",
-                  height: "5%",
+                  width: "20%",
                   backgroundColor: "#67c4fc",
                   color: "white"
                 }}>
                 <ShoppingListButton
                   name={name}
                   id={id}
+                  handleDelete={handleClick}
+                  handleUpdate={updateshoppingliststate}
                 />
-                <Button
-                  onClick={() => {
-                    handleClick(id, name);
-                  }}>
-                  Delete
-                </Button>
               </Button>
 
             </Typography>
