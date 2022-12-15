@@ -538,3 +538,18 @@ export const fetchShoppinglistrecipe = (shid: number) => {
       console.log("error: ", error);
     });
 };
+
+export const deleteshoppingrecipe = (id: number) => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_recipe`;
+  const jwttext = "" + localStorage.getItem("jwt")
+  return axios
+    .delete(`${recipe}/${id}`, { headers: { "Jwt-Token": jwttext } })
+    .then((response) => {
+      console.log("successful delete");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};

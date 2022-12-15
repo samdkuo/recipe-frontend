@@ -14,19 +14,42 @@ import { Shownrecipe } from "../Shownrecipe";
 interface Shopping_list {
   name: string;
   id: number;
+  user_id: number;
   handleDelete: (delid: number, name: string) => void;
   handleUpdate: (shid: number, name: string) => void;
+}
+
+export interface RecipeProps {
+  name: string;
+  description: string;
+  instruction: string;
+  cooktime: string;
+  label: string;
 }
 
 export function ShoppingListButton(
   {
     name,
     id,
+    user_id,
     handleDelete,
     handleUpdate
   }: Shopping_list) {
   const [buttonname, setbname] = useState("" + name);
   const { visible, onClose, onOpen } = useModalState();
+
+  const [shopping_lists_recipe, setshopping_lists_recipe] = useState<
+    RecipeProps[]
+  >([]);
+
+  React.useEffect(() => {
+    fetchShoppinglistrecipe(id).then((response: any) => {
+      if (response) {
+        console.log(response);
+        setshopping_lists_recipe(response);
+      }
+    });
+  }, [id]);
 
   const handleChange =
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +79,7 @@ export function ShoppingListButton(
         aria-labelledby="Shoppinglist"
       >
         <Shownrecipe
-          onClose={onClose} name={name} id={id} handleDelete={handleDelete} handleUpdate={handleUpdate} />
+          onClose={onClose} name={name} id={id} recipelist={shopping_lists_recipe} handleDelete={handleDelete} handleUpdate={handleUpdate} />
       </Dialog></div>
   );
 }

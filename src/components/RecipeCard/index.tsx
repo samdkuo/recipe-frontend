@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, KeyboardEventHandler } from "react";
 import { Header } from "semantic-ui-react";
 import {
   Modal,
@@ -12,18 +12,22 @@ import {
   DialogTitle,
   MenuItem,
   Checkbox,
+  SelectChangeEvent,
 } from "@mui/material";
 import { useModalState } from "../../hooks";
 import {
   deleteIngrediant,
   deleteRecipe,
   deleteRecipeImage,
+  deleteshoppingrecipe,
   fetchRecipeIngredients,
   fetchShoppinglist,
   fetchShoppinglistrecipe,
   postimage,
   postIngredient,
   postRecipeimage,
+  postshoppinglist,
+  postshoppingrecipe,
   updateRecipe,
 } from "../../requests/recipe";
 import { RecipeForm } from "../RecipeForm";
@@ -88,6 +92,7 @@ export function RecipeCard({
   const [shopping_lists_recipe, setshopping_lists_recipe] = useState<
     Shopping_list_recipe[]
   >([]);
+  const [liststr, setliststr] = useState("");
 
   React.useEffect(() => {
     fetchRecipeIngredients(id).then((response: any) => {
@@ -124,15 +129,69 @@ export function RecipeCard({
     [setIngredients]
   );
 
-  const isFound = (shid: number) => {
+  const updatestr = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    setliststr(event.target.value);
+  };
+
+
+  const handleKeyDown = (ev: { key: string; }) => {
+    console.log(`Pressed keyCode ${ev.key}`);
+    if (ev.key === 'Enter') {
+      postshoppinglist(liststr).then((response: any) => {
+        if (response) {
+          console.log(response);
+          addtoList(response);
+          fetchShoppinglist().then((response: any) => {
+            if (response) {
+              console.log(response);
+              setshopping_lists(response);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  const addtoList = (shid: number) => {
+    let bool = false;
+    let shrid = 0;
     shopping_lists_recipe.some(element => {
       if (element.shopping_list_id === shid) {
-        console.log("match found");
-        return true;
+        console.log(element.recipe_id + " is part of " + element.shopping_list_id);
+        bool = true;
+        shrid = element.id;
+      }
+    });
+    if (bool) {
+      deleteshoppingrecipe(shrid).then((response: any) => {
+        if (response) {
+          console.log(response);
+        }
+      })
+      const newlist2 = shopping_lists_recipe.filter((item: { shopping_list_id: number; }) => item.shopping_list_id !== shid);
+      console.log(newlist2);
+      setshopping_lists_recipe(newlist2)
+    } else {
+      postshoppingrecipe(shid, id).then((response: any) => {
+        if (response) {
+          console.log(response);
+          setshopping_lists_recipe([...shopping_lists_recipe, { id: response, shopping_list_id: shid, recipe_id: id }])
+        }
+      })
+    }
+  };
+
+  const isFound = (shid: number) => {
+    let bool = false;
+    shopping_lists_recipe.some(element => {
+      if (element.shopping_list_id === shid) {
+        console.log(element.recipe_id + " is part of " + element.shopping_list_id);
+        bool = true;
       }
 
     });
-    return false;
+    return bool;
   };
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -225,12 +284,21 @@ export function RecipeCard({
                         color: "white"
                       }}
                     >
-                      <MenuItem >
-                        New List+
+                      <MenuItem>
+                        <TextField
+                          name="new_list"
+                          id="new_list"
+                          variant="outlined"
+                          label="New_list"
+                          value={liststr}
+                          onChange={updatestr}
+                          onKeyDown={handleKeyDown}
+                        />
                       </MenuItem>
                       {shopping_lists.map((label) => (
                         <MenuItem key={label.id} value={label.id}>
-                          <Checkbox checked={isFound(label.id)} />
+                          <Checkbox checked={isFound(label.id)}
+                            onChange={() => { addtoList(label.id) }} />
                           {label.name}
                         </MenuItem>
                       ))}

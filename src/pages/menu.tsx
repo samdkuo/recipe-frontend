@@ -138,7 +138,7 @@ const Home = () => {
       <ul>
         <Grid
         >
-          {shopping_lists.map(({ id, name }) => (
+          {shopping_lists.map(({ id, user_id, name }) => (
             <Typography id="instruction" sx={{ mt: 2 }}>
               <Button
                 style={{
@@ -151,6 +151,7 @@ const Home = () => {
                 <ShoppingListButton
                   name={name}
                   id={id}
+                  user_id={user_id}
                   handleDelete={handleClick}
                   handleUpdate={updateshoppingliststate}
                 />

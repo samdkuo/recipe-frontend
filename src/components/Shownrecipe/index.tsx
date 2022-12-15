@@ -4,6 +4,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { toNamespacedPath } from "path";
 import React from "react";
 import { useState } from "react";
 import { deleteShoppinglist, fetchShoppinglistrecipe, updateShoppinglist } from "../../requests/recipe";
@@ -13,6 +14,7 @@ import { label } from "../RecipeForm/types";
 interface Shopping_list {
   name: string;
   id: number;
+  recipelist: RecipeProps[];
   onClose: VoidFunction;
   handleDelete: (delid: number, name: string) => void;
   handleUpdate: (shid: number, name: string) => void;
@@ -29,10 +31,12 @@ interface Recipe {
   label: label;
 }
 
-interface Shopping_list_recipe {
-  id: number;
-  shopping_list_id: number;
-  recipe_id: number;
+export interface RecipeProps {
+  name: string;
+  description: string;
+  instruction: string;
+  cooktime: string;
+  label: string;
 }
 
 interface Recipeslist {
@@ -43,22 +47,12 @@ export function Shownrecipe(
   {
     name,
     id,
+    recipelist,
     onClose,
     handleDelete,
     handleUpdate
   }: Shopping_list) {
 
-  const [shopping_lists_recipe, setshopping_lists_recipe] = useState<
-    Shopping_list_recipe[]
-  >([]);
-  React.useEffect(() => {
-    fetchShoppinglistrecipe(id).then((response: any) => {
-      if (response) {
-        console.log(response);
-        setshopping_lists_recipe(response);
-      }
-    });
-  }, [id]);
   const [recipes, setrecipes] = useState<
     Recipeslist[]
   >([]);
@@ -83,18 +77,20 @@ export function Shownrecipe(
   };
 
   return (
-    <><MuiButton
-      style={{
-        backgroundColor: "white",
-        color: "black",
-        fontSize: 14
-      }}
-      onClick={() => {
-        updateName("New Name");
-      }}
-    >
-      Edit Name
-    </MuiButton>
+    <>
+      {name}
+      <MuiButton
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          fontSize: 14
+        }}
+        onClick={() => {
+          updateName("New Name");
+        }}
+      >
+        Edit Name
+      </MuiButton>
       <MuiButton
         style={{
           backgroundColor: "white",
@@ -108,11 +104,10 @@ export function Shownrecipe(
         Delete List
       </MuiButton>
       Recipes:
-      {id}
       <ul>
-        {shopping_lists_recipe.map(({ shopping_list_id, recipe_id }) => (
+        {recipelist.map(({ name }) => (
           <Typography id="instruction" sx={{ mt: 2 }}>
-            {shopping_list_id}: {recipe_id}
+            {name}
           </Typography>
         ))}
       </ul>
