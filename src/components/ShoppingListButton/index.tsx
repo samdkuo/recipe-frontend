@@ -7,8 +7,9 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useModalState } from "../../hooks";
-import { fetchShoppinglistrecipe } from "../../requests/recipe";
+import { fetchrecipeimage, fetchShoppinglistingredients, fetchShoppinglistrecipe } from "../../requests/recipe";
 import { Shownrecipe } from "../Shownrecipe";
+import configData from "../../config.json";
 
 
 interface Shopping_list {
@@ -23,9 +24,23 @@ export interface RecipeProps {
   name: string;
   description: string;
   instruction: string;
-  cooktime: string;
-  label: string;
+  cooktime: number;
+  label: label;
+  image: string;
 }
+
+export interface IngredientProps {
+  name: string;
+  quantity: string;
+  adjective: string;
+  unit: string;
+}
+
+interface label {
+  id: number;
+  name: string;
+}
+
 
 export function ShoppingListButton(
   {
@@ -38,17 +53,45 @@ export function ShoppingListButton(
   const [buttonname, setbname] = useState("" + name);
   const { visible, onClose, onOpen } = useModalState();
 
+  interface Image {
+    recipe_id: number;
+    image_url: string;
+  }
+
   const [shopping_lists_recipe, setshopping_lists_recipe] = useState<
     RecipeProps[]
   >([]);
 
+  const [shopping_lists_ingredients, setshopping_lists_ingredients] = useState<
+    IngredientProps[]
+  >([]);
+
   React.useEffect(() => {
-    fetchShoppinglistrecipe(id).then((response: any) => {
-      if (response) {
-        console.log(response);
-        setshopping_lists_recipe(response);
+    fetchrecipeimage().then((images: Image[]) => {
+      if (images) {
+        console.log(images);
+        fetchShoppinglistrecipe(id).then((response: any) => {
+          if (response) {
+            console.log(response);
+            for (let i = 0; i < response.length; i++) {
+              response[i].image = configData.default_image;
+              for (let j = 0; j < images.length; j++) {
+                if (response[i].id == images[j].recipe_id) {
+                  response[i].image = images[j].image_url;
+                }
+              }
+            }
+            fetchShoppinglistingredients(id).then((list: any) => {
+              if (list) {
+                console.log(list);
+                setshopping_lists_ingredients(list);
+              }
+            })
+            setshopping_lists_recipe(response);
+          }
+        });
       }
-    });
+    })
   }, [id]);
 
   const handleChange =
@@ -79,7 +122,7 @@ export function ShoppingListButton(
         aria-labelledby="Shoppinglist"
       >
         <Shownrecipe
-          onClose={onClose} name={name} id={id} recipelist={shopping_lists_recipe} handleDelete={handleDelete} handleUpdate={handleUpdate} />
+          onClose={onClose} name={name} id={id} recipelist={shopping_lists_recipe} handleDelete={handleDelete} ingredientlist={shopping_lists_ingredients} handleUpdate={handleUpdate} />
       </Dialog></div>
   );
 }

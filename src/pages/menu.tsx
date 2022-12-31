@@ -120,20 +120,6 @@ const Home = () => {
           >
             Submit
           </Button></>}
-      <Button
-        style={{
-          position: "sticky",
-          marginLeft: "2%",
-          marginBottom: "2%",
-          width: "20%",
-          height: "5%",
-          backgroundColor: "#67c4fc",
-          color: "white"
-        }}
-        onClick={() => { changeshowlist(); }}
-      >
-        Generate Ingredient List
-      </Button>
 
       <ul>
         <Grid

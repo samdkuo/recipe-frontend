@@ -470,21 +470,6 @@ export const fetchShoppinglist = () => {
     });
 };
 
-export const fetchShoppinglistingredients = (shid: number) => {
-  const api = serverURL;
-  const recipe = `${api}/shopping_list_ingredient_all/${shid}`;
-  return axios
-    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
-    .then((response) => {
-      console.log("successful shopping_list search");
-      console.log(response.data)
-      return response.data;
-    })
-    .catch((error) => {
-      console.log("error: ", error);
-    });
-};
-
 export const deleteShoppinglist = (shid: number) => {
   console.log(shid);
   const api = serverURL;
@@ -547,6 +532,21 @@ export const deleteshoppingrecipe = (id: number) => {
     .delete(`${recipe}/${id}`, { headers: { "Jwt-Token": jwttext } })
     .then((response) => {
       console.log("successful delete");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
+
+export const fetchShoppinglistingredients = (shid: number) => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_recipe_ingredient/${shid}`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful shopping_list search");
+      console.log(response.data)
       return response.data;
     })
     .catch((error) => {

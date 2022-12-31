@@ -8,62 +8,60 @@ import { toNamespacedPath } from "path";
 import React from "react";
 import { useState } from "react";
 import { deleteShoppinglist, fetchShoppinglistrecipe, updateShoppinglist } from "../../requests/recipe";
-import { label } from "../RecipeForm/types";
+import configData from "../../config.json";
+import { RecipeCard } from "../RecipeCard";
 
 
 interface Shopping_list {
   name: string;
   id: number;
   recipelist: RecipeProps[];
+  ingredientlist: IngredientProps[];
   onClose: VoidFunction;
   handleDelete: (delid: number, name: string) => void;
   handleUpdate: (shid: number, name: string) => void;
-}
-
-interface Recipe {
-  filter(recipe: Recipe): React.SetStateAction<Recipe[]>;
-  id: number;
-  name: string;
-  description: string;
-  instruction: string;
-  cooktime: number;
-  image: string;
-  label: label;
 }
 
 export interface RecipeProps {
   name: string;
   description: string;
   instruction: string;
-  cooktime: string;
-  label: string;
+  cooktime: number;
+  label: label;
+  image: string;
 }
+
+export interface IngredientProps {
+  name: string;
+  quantity: string;
+  adjective: string;
+  unit: string;
+}
+
+interface label {
+  id: number;
+  name: string;
+}
+
 
 interface Recipeslist {
   recipe_id: number;
 }
+
 
 export function Shownrecipe(
   {
     name,
     id,
     recipelist,
+    ingredientlist,
     onClose,
     handleDelete,
     handleUpdate
   }: Shopping_list) {
 
-  const [recipes, setrecipes] = useState<
-    Recipeslist[]
-  >([]);
+  const [listswitch, setlistswitch] = useState(true);
 
-  const [buttonname, setbname] = useState("" + name);
-
-  const handleChange =
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const data = event.target;
-      setbname(data.value);
-    };
 
   const updateName = (updatedname: string) => {
     console.log(updatedname);
@@ -74,6 +72,10 @@ export function Shownrecipe(
   const deleteList = () => {
     handleDelete(id, name);
     deleteShoppinglist(id);
+  };
+
+  const showlist = () => {
+    setlistswitch(!listswitch);
   };
 
   return (
@@ -103,18 +105,81 @@ export function Shownrecipe(
       >
         Delete List
       </MuiButton>
-      Recipes:
-      <ul>
-        {recipelist.map(({ name }) => (
-          <Typography id="instruction" sx={{ mt: 2 }}>
-            {name}
-          </Typography>
-        ))}
-      </ul>
+
       <MuiButton
         style={{
           backgroundColor: "white",
           color: "black",
+          fontSize: 14
+        }}
+        onClick={() => {
+          showlist();
+        }}
+      >
+        View Ingredients
+      </MuiButton>
+      <div>
+        {listswitch ?
+          <ul>
+            Recipes:
+            {recipelist.map(({ name, cooktime, description, label, instruction, image }) => (
+              <><Typography id="instruction" sx={{ mt: 2 }}>
+                <MuiButton
+                  style={{
+                    position: "sticky",
+                    right: 0,
+                    backgroundColor: "#67c4fc",
+                    color: "white",
+                    fontSize: 14
+                  }}
+                >
+                  <RecipeCard
+                    id={id}
+                    title={name}
+                    cookTime={cooktime}
+                    image={image}
+                    description={description}
+                    instruction={instruction}
+                    labelname={label.name}
+                    labelid={label.id} deleteRstate={function (data: any): void {
+                      throw new Error("Function not implemented.");
+                    }} updateRecipeState={function (data: any, recipe: number): void {
+                      throw new Error("Function not implemented.");
+                    }} updateRecipeImage={function (recipe: number, imagepath: string): void {
+                      throw new Error("Function not implemented.");
+                    }} />
+                </MuiButton>
+              </Typography></>
+            ))}
+          </ul>
+          :
+          <ul>
+            Ingredients:
+            {ingredientlist.map(({ name, quantity, adjective, unit }) => (
+              <Typography id="instruction" sx={{ mt: 2 }}>
+                <MuiButton
+                  style={{
+                    position: "sticky",
+                    right: 0,
+                    backgroundColor: "#67c4fc",
+                    color: "white",
+                    fontSize: 14
+                  }}
+                >
+                  {name}: {quantity} {adjective} {unit}
+                </MuiButton>
+              </Typography>
+            ))}
+          </ul>
+        }
+      </div>
+
+      <MuiButton
+        style={{
+          position: "sticky",
+          right: 0,
+          backgroundColor: "#67c4fc",
+          color: "white",
           fontSize: 14
         }}
         onClick={() => {
