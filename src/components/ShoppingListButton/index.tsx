@@ -21,6 +21,7 @@ interface Shopping_list {
 }
 
 export interface RecipeProps {
+  id: number;
   name: string;
   description: string;
   instruction: string;

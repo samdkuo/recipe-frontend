@@ -96,6 +96,7 @@ export function RecipeCard({
 
   React.useEffect(() => {
     fetchRecipeIngredients(id).then((response: any) => {
+      console.log(id);
       console.log(response);
       if (response) {
         setIngredients(response);

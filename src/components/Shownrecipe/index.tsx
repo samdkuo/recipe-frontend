@@ -23,6 +23,7 @@ interface Shopping_list {
 }
 
 export interface RecipeProps {
+  id: number;
   name: string;
   description: string;
   instruction: string;
@@ -122,7 +123,7 @@ export function Shownrecipe(
         {listswitch ?
           <ul>
             Recipes:
-            {recipelist.map(({ name, cooktime, description, label, instruction, image }) => (
+            {recipelist.map(({ id, name, cooktime, description, label, instruction, image }) => (
               <><Typography id="instruction" sx={{ mt: 2 }}>
                 <MuiButton
                   style={{
