@@ -1,6 +1,7 @@
 import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
+  DialogTitle,
   TextField,
   Typography,
 } from "@mui/material";
@@ -82,75 +83,92 @@ export function Shownrecipe(
   return (
     <>
       {name}
-      <MuiButton
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: 14
-        }}
-        onClick={() => {
-          updateName("New Name");
-        }}
-      >
-        Edit Name
-      </MuiButton>
-      <MuiButton
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: 14
-        }}
-        onClick={() => {
-          deleteList();
-        }}
-      >
-        Delete List
-      </MuiButton>
+      <DialogTitle>
+        <MuiButton
+          style={{
+            position: "sticky",
+            left: "0%",
+            width: "20%",
+            height: "5%",
+            backgroundColor: "#67c4fc",
+            color: "white",
+            fontSize: 14
+          }}
+          onClick={() => {
+            updateName("New Name");
+          }}
+        >
+          Edit Name
+        </MuiButton>
+        <MuiButton
+          style={{
+            position: "sticky",
+            left: "40%",
+            width: "20%",
+            height: "5%",
+            backgroundColor: "#67c4fc",
+            color: "white",
+            fontSize: 14
+          }}
+          onClick={() => {
+            deleteList();
+          }}
+        >
+          Delete List
+        </MuiButton>
 
-      <MuiButton
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: 14
-        }}
-        onClick={() => {
-          showlist();
-        }}
-      >
-        View Ingredients
-      </MuiButton>
+        <MuiButton
+          style={{
+            position: "sticky",
+            left: "90%",
+            width: "20%",
+            height: "5%",
+            backgroundColor: "#67c4fc",
+            color: "white",
+            fontSize: 14
+          }}
+          onClick={() => {
+            showlist();
+          }}
+        >
+          {listswitch ?
+            "View Ingredients"
+            :
+            "View Recipes"}
+        </MuiButton>
+      </DialogTitle>
       <div>
         {listswitch ?
           <ul>
-            Recipes:
+            <div>
+              Recipes:
+            </div>
             {recipelist.map(({ id, name, cooktime, description, label, instruction, image }) => (
-              <><Typography id="instruction" sx={{ mt: 2 }}>
-                <MuiButton
-                  style={{
-                    position: "sticky",
-                    right: 0,
-                    backgroundColor: "#67c4fc",
-                    color: "white",
-                    fontSize: 14
-                  }}
-                >
-                  <RecipeCard
-                    id={id}
-                    title={name}
-                    cookTime={cooktime}
-                    image={image}
-                    description={description}
-                    instruction={instruction}
-                    labelname={label.name}
-                    labelid={label.id} deleteRstate={function (data: any): void {
-                      throw new Error("Function not implemented.");
-                    }} updateRecipeState={function (data: any, recipe: number): void {
-                      throw new Error("Function not implemented.");
-                    }} updateRecipeImage={function (recipe: number, imagepath: string): void {
-                      throw new Error("Function not implemented.");
-                    }} />
-                </MuiButton>
-              </Typography></>
+              <MuiButton
+                style={{
+                  position: "sticky",
+                  marginRight: 5,
+                  backgroundColor: "#67c4fc",
+                  color: "white",
+                  fontSize: 14
+                }}
+              >
+                <RecipeCard
+                  id={id}
+                  title={name}
+                  cookTime={cooktime}
+                  image={image}
+                  description={description}
+                  instruction={instruction}
+                  labelname={label.name}
+                  labelid={label.id} deleteRstate={function (data: any): void {
+                    throw new Error("Function not implemented.");
+                  }} updateRecipeState={function (data: any, recipe: number): void {
+                    throw new Error("Function not implemented.");
+                  }} updateRecipeImage={function (recipe: number, imagepath: string): void {
+                    throw new Error("Function not implemented.");
+                  }} />
+              </MuiButton>
             ))}
           </ul>
           :
