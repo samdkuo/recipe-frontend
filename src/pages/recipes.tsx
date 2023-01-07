@@ -450,6 +450,7 @@ const Home = () => {
               labelid={label.id}
               description={description}
               instruction={instruction}
+              isrecipelist={false}
             />
           )
         )}

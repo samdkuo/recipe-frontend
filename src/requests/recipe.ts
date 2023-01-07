@@ -508,6 +508,20 @@ export const updateShoppinglist = (name:string,shid:number) => {
       console.log("error: ", error);
     });
 };
+export const fetchShoppinglistbyrecipe = (shid: number) => {
+  const api = serverURL;
+  const recipe = `${api}/shopping_list_by_recipe/${shid}`;
+  return axios
+    .get(`${recipe}`, { headers: { "Jwt-Token": "" } })
+    .then((response) => {
+      console.log("successful shopping_list search");
+      console.log(response.data)
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
 
 export const fetchShoppinglistrecipe = (shid: number) => {
   const api = serverURL;

@@ -23,6 +23,7 @@ import {
   fetchRecipeIngredients,
   fetchShoppinglist,
   fetchShoppinglistrecipe,
+  fetchShoppinglistbyrecipe,
   postimage,
   postIngredient,
   postRecipeimage,
@@ -49,6 +50,7 @@ interface RecipeCardProps {
   deleteRstate: (data: any) => void;
   updateRecipeState: (data: any, recipe: number) => void;
   updateRecipeImage: (recipe: number, imagepath: string) => void;
+  isrecipelist: boolean;
 }
 
 interface Ingredient {
@@ -81,6 +83,7 @@ export function RecipeCard({
   updateRecipeImage,
   // image = require("/Users/terrancekuo/src/recipe-frontend/src/necoarc.jpeg")
   image,
+  isrecipelist
 }: RecipeCardProps) {
   const { visible, onClose, onOpen } = useModalState();
   const [ingredients, setIngredients] = useState<
@@ -108,10 +111,14 @@ export function RecipeCard({
         setshopping_lists(response);
       }
     });
-    fetchShoppinglistrecipe(id).then((response: any) => {
+    console.log("RECIPES" + id);
+    fetchShoppinglistbyrecipe(id).then((response: any) => {
       if (response) {
+        console.log("recipe id:" + id);
         console.log(response);
         setshopping_lists_recipe(response);
+      } else {
+        console.log("failed to get recipes");
       }
     });
   }, [id]);
@@ -236,40 +243,41 @@ export function RecipeCard({
         aria-labelledby="recipe-name"
       >
         <DialogContent style={{ display: "flex", flexDirection: "column", paddingTop: 8 }}>
-
           {!isUpdating ? (
             <Box>
               <Typography id="recipe-name" variant="h6" component="h2">
                 {`${title}`}
                 <DialogTitle>
-                  <Button
-                    style={{
-                      position: "sticky",
-                      left: "0%",
-                      width: "20%",
-                      height: "5%",
-                      backgroundColor: "#67c4fc",
-                      color: "white",
-                    }}
-                    onClick={buttonHandler}
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    style={{
-                      position: "sticky",
-                      left: "25%",
-                      width: "20%",
-                      height: "5%",
-                      backgroundColor: "#67c4fc",
-                      color: "white",
-                    }}
-                    onClick={() => {
-                      handleClick(id);
-                    }}
-                  >
-                    Delete
-                  </Button>
+                  {!isrecipelist ?
+                    <><Button
+                      style={{
+                        position: "sticky",
+                        left: "0%",
+                        width: "20%",
+                        height: "5%",
+                        backgroundColor: "#67c4fc",
+                        color: "white",
+                      }}
+                      onClick={buttonHandler}
+                    >
+                      Update
+                    </Button><Button
+                      style={{
+                        position: "sticky",
+                        width: "20%",
+                        height: "5%",
+                        left: "30%",
+                        backgroundColor: "#67c4fc",
+                        color: "white",
+                      }}
+                      onClick={() => {
+                        handleClick(id);
+                      }}
+                    >
+                        Delete
+                      </Button></>
+                    :
+                    null}
                   {localStorage.getItem("jwt") ?
                     <TextField
                       name="shopping_list"
@@ -278,7 +286,7 @@ export function RecipeCard({
                       select
                       style={{
                         position: "sticky",
-                        left: "45%",
+                        left: "58%",
                         width: "20%",
                         height: "5%",
                         backgroundColor: "#67c4fc",

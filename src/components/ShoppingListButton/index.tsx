@@ -106,9 +106,13 @@ export function ShoppingListButton(
     <div>
       <MuiButton
         style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: 14
+          position: "sticky",
+          marginLeft: "2%",
+          marginBottom: "2%",
+          width: "20%",
+          height: "5%",
+          backgroundColor: "#67c4fc",
+          color: "white"
         }} onClick={onOpen}
       >
         {name}

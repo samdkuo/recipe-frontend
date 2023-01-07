@@ -63,6 +63,8 @@ export function Shownrecipe(
   }: Shopping_list) {
 
   const [listswitch, setlistswitch] = useState(true);
+  const [listname, setname] = useState("");
+  const [editname, seteditname] = useState(true);
 
 
   const updateName = (updatedname: string) => {
@@ -79,27 +81,53 @@ export function Shownrecipe(
   const showlist = () => {
     setlistswitch(!listswitch);
   };
+  const handleChange =
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const data = event.target;
+      setname(data.value);
+    };
 
+  const handleKeyDown = (ev: { key: string; }) => {
+    console.log(`Pressed keyCode ${ev.key}`);
+    if (ev.key === 'Enter') {
+      updateName(listname);
+    }
+  }
+  const handlepress =
+    () => {
+      seteditname(!editname);
+    };
   return (
     <>
       {name}
       <DialogTitle>
-        <MuiButton
-          style={{
-            position: "sticky",
-            left: "0%",
-            width: "20%",
-            height: "5%",
-            backgroundColor: "#67c4fc",
-            color: "white",
-            fontSize: 14
-          }}
-          onClick={() => {
-            updateName("New Name");
-          }}
-        >
-          Edit Name
-        </MuiButton>
+        {editname ?
+          <MuiButton
+            style={{
+              position: "sticky",
+              left: "0%",
+              width: "20%",
+              height: "5%",
+              backgroundColor: "#67c4fc",
+              color: "white",
+              fontSize: 14
+            }}
+            onClick={() => {
+              handlepress();
+            }}
+          >
+            Edit Name
+          </MuiButton>
+          :
+          <TextField
+            name="name"
+            id="name"
+            variant="outlined"
+            label="Name"
+            value={listname}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            type="text" />}
         <MuiButton
           style={{
             position: "sticky",
@@ -161,6 +189,7 @@ export function Shownrecipe(
                   description={description}
                   instruction={instruction}
                   labelname={label.name}
+                  isrecipelist={true}
                   labelid={label.id} deleteRstate={function (data: any): void {
                     throw new Error("Function not implemented.");
                   }} updateRecipeState={function (data: any, recipe: number): void {
