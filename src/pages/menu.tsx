@@ -125,25 +125,14 @@ const Home = () => {
         <Grid
         >
           {shopping_lists.map(({ id, user_id, name }) => (
-            <Typography id="instruction" sx={{ mt: 2 }}>
-              <Button
-                style={{
-                  position: "sticky",
-                  left: "0%",
-                  width: "20%",
-                  backgroundColor: "#67c4fc",
-                  color: "white"
-                }}>
-                <ShoppingListButton
-                  name={name}
-                  id={id}
-                  user_id={user_id}
-                  handleDelete={handleClick}
-                  handleUpdate={updateshoppingliststate}
-                />
-              </Button>
+            <ShoppingListButton
+              name={name}
+              id={id}
+              user_id={user_id}
+              handleDelete={handleClick}
+              handleUpdate={updateshoppingliststate}
+            />
 
-            </Typography>
           ))}
         </Grid>
       </ul></>

@@ -1,10 +1,8 @@
 import { Button } from "@mui/material";
 import React, { Suspense } from "react";
 import { Link as ReactLink, useHistory } from "react-router-dom";
-
 import { dimensions } from "./types";
 
-let loginon = false;
 
 
 const Navigation = ({ routes }: { routes: any }) => {
@@ -14,7 +12,6 @@ const Navigation = ({ routes }: { routes: any }) => {
   const handleLogin = () => {
     let path = `Login`;
     history.push(path);
-    loginon = true;
     console.log(window.location.href);
   };
 
@@ -31,7 +28,6 @@ const Navigation = ({ routes }: { routes: any }) => {
   const handleLogout = () => {
     localStorage.setItem("jwt", "")
     let path = ``;
-    loginon = false;
     history.push(path);
     console.log(window.location.href);
   };
@@ -50,7 +46,7 @@ const Navigation = ({ routes }: { routes: any }) => {
       <ReactLink to="/">
         <img src="images/fried-egg.png" style={{ width: 40, height: 40 }} />
       </ReactLink>
-      {localStorage.getItem("jwt") ?
+      {localStorage.getItem("jwt") ? //new login doesn't catch the jwt unless you hard code it at login.tsx
         <><Button
           style={{ width: 148, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
           variant="contained"

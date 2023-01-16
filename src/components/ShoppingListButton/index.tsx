@@ -109,8 +109,8 @@ export function ShoppingListButton(
           position: "sticky",
           marginLeft: "2%",
           marginBottom: "2%",
-          width: "20%",
-          height: "5%",
+          width: "30%",
+          height: "15%",
           backgroundColor: "#67c4fc",
           color: "white"
         }} onClick={onOpen}

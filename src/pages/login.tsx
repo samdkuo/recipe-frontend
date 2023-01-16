@@ -3,7 +3,6 @@ import { width } from "@mui/system";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Login } from "../requests/recipe";
-import loginon from "../layout/Navigation";
 
 
 const Home = () => {
@@ -11,6 +10,7 @@ const Home = () => {
   const handleClick = () => {
     let path = ``;
     history.push(path);
+    localStorage.setItem("jwt", "a") //i can't for the life of me make a global variable so this will have to do
     Login(email, password);
   };
 
@@ -21,7 +21,11 @@ const Home = () => {
       setEmail(event.target.value);
     }
 
-
+  const handleKeyDown = (ev: { key: string; }) => {
+    if (ev.key === 'Enter') {
+      handleClick();
+    }
+  }
   const handlepasswordChange =
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(event.target.value);
@@ -49,11 +53,12 @@ const Home = () => {
         style={{ width: "30%", marginBottom: "1%" }}
       />
       <TextField
-        name="password"
+        type="password" name="password"
         id="password"
         variant="outlined"
         label="Password"
         onChange={handlepasswordChange}
+        onKeyDown={handleKeyDown}
         style={{ width: "30%", marginBottom: "1%" }}
       />
       <Button

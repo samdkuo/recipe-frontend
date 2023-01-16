@@ -99,7 +99,9 @@ export function Shownrecipe(
     };
   return (
     <>
-      {name}
+      <Typography id="instruction" fontSize={24} sx={{ mt: 2 }}>
+        {name}
+      </Typography>
       <DialogTitle>
         {editname ?
           <MuiButton
