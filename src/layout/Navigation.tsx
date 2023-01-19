@@ -52,19 +52,20 @@ const Navigation = ({ routes }: { routes: any }) => {
           variant="contained"
           onClick={handleLogout}
         >
-          Signout
+          <span style={{ fontWeight: 'bold' }}>Signout</span>
         </Button><Button
           style={{ width: 148, right: 10, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
           variant="contained"
           onClick={handleRecipes}
         >
-            Recipes
+            <span style={{ fontWeight: 'bold' }}>Recipes</span>
+
           </Button><Button
             style={{ width: 148, right: 20, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
             variant="contained"
             onClick={handleCalendar}
           >
-            Shopping Lists
+            <span style={{ fontWeight: 'bold' }}>Shopping Lists</span>
           </Button></>
         : window.location.href !== "http://localhost:8080/Login" ? (
           <div>
@@ -73,13 +74,15 @@ const Navigation = ({ routes }: { routes: any }) => {
               variant="contained"
               onClick={handleLogin}
             >
-              Login
+              <span style={{ fontWeight: 'bold' }}>Login</span>
+
             </Button><Button
               style={{ width: 148, right: 10, float: 'right', backgroundColor: 'white', color: "#67c4fc" }}
               variant="contained"
               onClick={handleRecipes}
             >
-              Recipes
+              <span style={{ fontWeight: 'bold' }}>Recipes</span>
+
             </Button>
           </div>
         ) : null

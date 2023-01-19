@@ -3,6 +3,7 @@ import {
   ButtonProps as MuiButtonProps,
   Dialog,
   TextField,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
@@ -106,16 +107,13 @@ export function ShoppingListButton(
     <div>
       <MuiButton
         style={{
-          position: "sticky",
-          marginLeft: "2%",
-          marginBottom: "2%",
-          width: "30%",
-          height: "15%",
+          width: 230,
+          height: 50,
           backgroundColor: "#67c4fc",
           color: "white"
         }} onClick={onOpen}
       >
-        {name}
+        <Typography style={{ fontWeight: 'bold' }}>{name}</Typography>
       </MuiButton >
       <Dialog
         fullWidth

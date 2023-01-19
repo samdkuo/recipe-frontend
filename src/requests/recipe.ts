@@ -1,3 +1,4 @@
+import { Alert, AlertTitle } from "@mui/material";
 import axios from "axios";
 import { identity } from "lodash-es";
 import { accountTypes } from "../constants/actionTypes";
@@ -242,6 +243,9 @@ export const SearchRecipeEntries = (Rname: string) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      if(error == 401){
+      alert("You need to login!");
+      }
     });
 };
 
@@ -263,6 +267,7 @@ export const postimage = (image: any) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -278,6 +283,7 @@ export const fetchrecipeimage = () => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -300,6 +306,7 @@ export const postRecipeimage = (rid:number, url:string) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -322,6 +329,7 @@ export const updateRecipeimage = (rid:number, url:string) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -361,6 +369,7 @@ export const Login = (email:string, password:string) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -384,6 +393,7 @@ export const posttoplanner = (rid:number, rnum:number) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -405,6 +415,7 @@ export const postshoppinglist = (name:string) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -429,6 +440,7 @@ export const postshoppinglisting = (entry: any) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 export const postshoppingrecipe = (shid:number, rid:number) => {
@@ -450,6 +462,7 @@ export const postshoppingrecipe = (shid:number, rid:number) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -481,6 +494,7 @@ export const deleteShoppinglist = (shid: number) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 
@@ -504,6 +518,7 @@ export const updateShoppinglist = (name:string,shid:number) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 export const fetchShoppinglistbyrecipe = (shid: number) => {
@@ -548,6 +563,7 @@ export const deleteshoppingrecipe = (id: number) => {
     })
     .catch((error) => {
       console.log("error: ", error);
+      alert("You need to login!");
     });
 };
 

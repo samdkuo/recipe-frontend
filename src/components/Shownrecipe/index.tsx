@@ -69,9 +69,12 @@ export function Shownrecipe(
 
   const updateName = (updatedname: string) => {
     console.log(updatedname);
-    handleUpdate(id, updatedname);
-    updateShoppinglist(updatedname, id);
-  };
+    updateShoppinglist(updatedname, id).then((response: any) => {
+      if (response) {
+        handleUpdate(id, updatedname);
+      }
+    })
+  }
 
   const deleteList = () => {
     handleDelete(id, name);

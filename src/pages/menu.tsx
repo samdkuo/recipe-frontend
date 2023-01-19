@@ -79,63 +79,50 @@ const Home = () => {
     () => {
       setpressed(false);
     };
-  const changeshowlist = () => {
-    setshowlist(true);
-  };
+
   return (
     <>
-      {pressed ?
-        <Button
-          style={{
-            position: "sticky",
-            marginLeft: "2%",
-            marginBottom: "2%",
-            width: "20%",
-            height: "5%",
-            backgroundColor: "#67c4fc",
-            color: "white"
-          }}
-          onClick={handlepress}
-        >
-          Add New List
-        </Button>
-        : <><TextField
+      <div style={{
+        display: "flex",
+        width: "100%", marginBottom: 16
+      }}>
+
+        <TextField
           name="name"
           id="name"
           variant="outlined"
-          label="Name"
+          label="List Name"
           value={name}
           onChange={handleChange}
-          type="text" /><Button
-            style={{
-              position: "sticky",
-              marginLeft: "2%",
-              marginBottom: "2%",
-              width: "20%",
-              height: "5%",
-              backgroundColor: "#67c4fc",
-              color: "white"
-            }}
-            onClick={() => { addshoppingliststate(name); }}
-          >
-            Submit
-          </Button></>}
+          type="text"
+          style={{ flex: 5, marginRight: 16 }}
+          placeholder="List Name..."
+        />
 
-      <ul>
-        <Grid
+
+        <Button
+          style={{
+            flex: 1,
+            backgroundColor: "#67c4fc",
+            color: "white"
+          }}
+          onClick={() => { addshoppingliststate(name); }}
         >
-          {shopping_lists.map(({ id, user_id, name }) => (
-            <ShoppingListButton
-              name={name}
-              id={id}
-              user_id={user_id}
-              handleDelete={handleClick}
-              handleUpdate={updateshoppingliststate}
-            />
+          Add List
+        </Button>
+      </div>
 
-          ))}
-        </Grid>
-      </ul></>
+      <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
+        {shopping_lists.map(({ id, user_id, name }, index) => (
+          <ShoppingListButton
+            name={name}
+            id={id}
+            user_id={user_id}
+            handleDelete={handleClick}
+            handleUpdate={updateshoppingliststate}
+          />
+        ))}
+      </div></>
 
   )
 };
