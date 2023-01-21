@@ -214,8 +214,7 @@ export function Shownrecipe(
                   style={{
                     position: "sticky",
                     right: 0,
-                    backgroundColor: "#67c4fc",
-                    color: "white",
+                    color: "#67c4fc",
                     fontSize: 14
                   }}
                 >

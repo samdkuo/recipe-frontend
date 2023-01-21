@@ -298,7 +298,7 @@ export const postRecipeimage = (rid:number, url:string) => {
         recipe_id: rid,
         image_url: url,
       },
-      { headers: { "Jwt-Token": "" } }
+      { headers: { "Jwt-Token": jwttext } }
     )
     .then((response) => {
       console.log("successful recipe_image post");

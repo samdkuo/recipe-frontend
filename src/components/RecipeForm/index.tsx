@@ -143,7 +143,11 @@ export function RecipeForm({
           console.log(imageurl);
           if (imageurl) {
             updateRecipeState({ ...data, image: imageurl }, rid);
-            updateRecipeimage(rid, imageurl);
+            if (image === configData.default_image) {
+              postRecipeimage(rid, imageurl);
+            } else {
+              updateRecipeimage(rid, imageurl);
+            }
           } else {
             updateRecipeState(data, rid);
           }

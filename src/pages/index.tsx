@@ -56,11 +56,8 @@ const Home = () => {
         {[
           "All",
           "Breakfast",
-          "Entrees",
-          "Bread",
-          "Side Dishes",
-          "Dessert",
-          "Drinks",
+          "Lunch",
+          "Dinner"
         ].map((category, index) => (
           <Grid item>
             <Chip style={{ minWidth: 115 }} label={category} onClick={handleClick} />

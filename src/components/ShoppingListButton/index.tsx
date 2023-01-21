@@ -105,12 +105,12 @@ export function ShoppingListButton(
   return (
 
     <div>
-      <MuiButton
+      <MuiButton variant="text"
         style={{
           width: 230,
           height: 50,
-          backgroundColor: "#67c4fc",
-          color: "white"
+          backgroundColor: "#008CBA",
+          color: "White"
         }} onClick={onOpen}
       >
         <Typography style={{ fontWeight: 'bold' }}>{name}</Typography>
