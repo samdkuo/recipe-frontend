@@ -1,6 +1,7 @@
 import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
+  Checkbox,
   DialogTitle,
   TextField,
   Typography,
@@ -219,6 +220,7 @@ export function Shownrecipe(
                   }}
                 >
                   {name}: {quantity} {adjective} {unit}
+                  <Checkbox />
                 </MuiButton>
               </Typography>
             ))}

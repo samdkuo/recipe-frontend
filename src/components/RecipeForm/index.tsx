@@ -29,6 +29,7 @@ import { RecipeFormProps, labels, IngredientProps } from "./types";
 import { IngredientButton } from "../IngredientButton"
 import { config } from "process";
 import configData from "../../config.json";
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 
 export function RecipeForm({
   addRecipe,
@@ -244,19 +245,21 @@ export function RecipeForm({
           <ul>
             {ingredients.map(({ name, quantity, adjective, unit }) => (
               <Typography id="instruction" sx={{ mt: 2 }}>
-                <Button>
-                  <IngredientButton
-                    name={name}
-                    quantity={quantity}
-                    adjective={adjective}
-                    unit={unit}
-                  />
-                  <Button
-                    onClick={() => {
-                      handleClick(rid, name);
-                    }}>
-                    Delete
-                  </Button>
+                <IngredientButton
+                  name={name}
+                  quantity={quantity}
+                  adjective={adjective}
+                  unit={unit}
+                />
+                <Button
+                  style={{
+                    backgroundColor: "clear",
+                    color: "red"
+                  }}
+                  onClick={() => {
+                    handleClick(rid, name);
+                  }}>
+                  <CloseTwoToneIcon />
                 </Button>
               </Typography>
             ))}
