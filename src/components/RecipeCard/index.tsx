@@ -13,6 +13,7 @@ import {
   MenuItem,
   Checkbox,
   SelectChangeEvent,
+  Select,
 } from "@mui/material";
 import { useModalState } from "../../hooks";
 import {
@@ -247,26 +248,34 @@ export function RecipeCard({
             <Box>
               <Typography id="recipe-name" variant="h6" component="h2">
                 {`${title}`}
-                <DialogTitle>
-                  {!isrecipelist ?
-                    <><Button
+              </Typography>
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 0px" }}>
+                {!isrecipelist ?
+                  <>
+                    <Button
                       style={{
-                        position: "sticky",
-                        left: "0%",
-                        width: "20%",
-                        height: "5%",
+                        height: 40,
+                        width: 200,
+                        // position: "sticky",
+                        // left: "0%",
+                        // width: "20%",
+                        // height: "5%",
                         backgroundColor: "#67c4fc",
                         color: "white",
                       }}
                       onClick={buttonHandler}
                     >
                       Update
-                    </Button><Button
+                    </Button>
+
+                    <Button
                       style={{
-                        position: "sticky",
-                        width: "20%",
-                        height: "5%",
-                        left: "30%",
+                        width: 200,
+                        height: 40,
+                        // position: "sticky",
+                        // width: "20%",
+                        // height: "5%",
+                        // left: "30%",
                         backgroundColor: "#67c4fc",
                         color: "white",
                       }}
@@ -274,48 +283,48 @@ export function RecipeCard({
                         handleClick(id);
                       }}
                     >
-                        Delete
-                      </Button></>
-                    :
-                    null}
-                  {localStorage.getItem("jwt") ?
-                    <TextField
-                      name="shopping_list"
-                      id="shopping_list"
-                      label="Shopping_list"
-                      select
-                      style={{
-                        position: "sticky",
-                        left: "58%",
-                        width: "20%",
-                        height: "5%",
-                        backgroundColor: "#67c4fc",
-                        color: "white"
-                      }}
-                    >
-                      <MenuItem>
-                        <TextField
-                          name="new_list"
-                          id="new_list"
-                          variant="outlined"
-                          label="New_list"
-                          value={liststr}
-                          onChange={updatestr}
-                          onKeyDown={handleKeyDown}
-                        />
+                      Delete
+                    </Button>
+                  </>
+                  :
+                  null}
+                {localStorage.getItem("jwt") ?
+                  <TextField
+                    name="shopping_list"
+                    id="shopping_list"
+                    label="Shopping Lists"
+                    select
+                    style={{
+                      // height: 40,
+                      width: 200,
+                      backgroundColor: "#67c4fc",
+                      color: "white",
+                      overflow: "hidden",
+
+                    }}
+                  >
+                    <MenuItem>
+                      <TextField
+                        name="new_list"
+                        id="new_list"
+                        variant="outlined"
+                        label="New_list"
+                        value={liststr}
+                        onChange={updatestr}
+                        onKeyDown={handleKeyDown}
+                      />
+                    </MenuItem>
+                    {shopping_lists.map((label) => (
+                      <MenuItem key={label.id} value={label.id}>
+                        <Checkbox checked={isFound(label.id)}
+                          onChange={() => { addtoList(label.id) }} />
+                        {label.name}
                       </MenuItem>
-                      {shopping_lists.map((label) => (
-                        <MenuItem key={label.id} value={label.id}>
-                          <Checkbox checked={isFound(label.id)}
-                            onChange={() => { addtoList(label.id) }} />
-                          {label.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    : null
-                  }
-                </DialogTitle>
-              </Typography>
+                    ))}
+                  </TextField>
+                  : null
+                }
+              </div>
               {selectedImage ? (
                 <img
                   style={{ width: 150, height: 150 }}

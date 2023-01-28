@@ -211,6 +211,7 @@ export function Shownrecipe(
             Ingredients:
             {ingredientlist.map(({ name, quantity, adjective, unit }) => (
               <Typography id="instruction" sx={{ mt: 2 }}>
+                <Checkbox />
                 <MuiButton
                   style={{
                     position: "sticky",
@@ -220,7 +221,6 @@ export function Shownrecipe(
                   }}
                 >
                   {name}: {quantity} {adjective} {unit}
-                  <Checkbox />
                 </MuiButton>
               </Typography>
             ))}
