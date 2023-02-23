@@ -3,7 +3,6 @@ import axios from "axios";
 import { identity } from "lodash-es";
 import { accountTypes } from "../constants/actionTypes";
 const serverURL = "http://localhost:3000/api/v1";
-const jwttext = "" + localStorage.getItem("jwt");
 
 export const getRecipeURL = (entry_id = null) => {
   const api = serverURL;
@@ -76,6 +75,7 @@ export const postRecipe = (entry: any) => {
   console.log(entry);
   const api = serverURL;
   const recipe = `${api}/recipe`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -130,6 +130,7 @@ export const postIngredient = (entry: any, rid:number) => {
   console.log(entry);
   const api = serverURL;
   const recipe = `${api}/ingredient/recipeID/${rid}`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -153,6 +154,7 @@ export const postIngredient = (entry: any, rid:number) => {
 export const deleteRecipe = (recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": jwttext } })
     .then((response) => {
@@ -167,6 +169,7 @@ export const deleteRecipe = (recipeId: number) => {
 export const deleteRecipeImage = (recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe_image`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .delete(`${recipe}/${recipeId}`, { headers: { "Jwt-Token": jwttext } })
     .then((response) => {
@@ -181,7 +184,7 @@ export const deleteRecipeImage = (recipeId: number) => {
 export const deleteIngrediant = (recipeId: number, ingredientname: string) => {
   const api = serverURL;
   const recipe = `${api}/ingredient/recipeID/${recipeId}/ingredientID/${ingredientname}`;
-
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .delete(`${recipe}`, 
     { headers: { "jwt-token": jwttext} })
@@ -197,6 +200,7 @@ export const deleteIngrediant = (recipeId: number, ingredientname: string) => {
 export const updateRecipe = (entry: any, recipeId: number) => {
   const api = serverURL;
   const recipe = `${api}/recipe`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .put(`${recipe}/${recipeId}`, {
       name: entry.name,
@@ -252,6 +256,7 @@ export const SearchRecipeEntries = (Rname: string) => {
 export const postimage = (image: any) => {
   const api = serverURL;
   const recipe = `${api}/uploadfile/1`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
   .post(
     `${recipe}`,
@@ -291,6 +296,7 @@ export const postRecipeimage = (rid:number, url:string) => {
   console.log(rid + " " + url);
   const api = serverURL;
   const recipe = `${api}/recipe_image`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -314,6 +320,7 @@ export const updateRecipeimage = (rid:number, url:string) => {
   console.log(rid + " " + url);
   const api = serverURL;
   const recipe = `${api}/recipe_image/${rid}`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .put(
       `${recipe}`,
@@ -351,6 +358,7 @@ export const Login = (email:string, password:string) => {
   console.log(email + " " + password);
   const api = serverURL;
   const recipe = `${api}/login`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -401,6 +409,7 @@ export const postshoppinglist = (name:string) => {
   console.log(localStorage["id"]  + " " + name);
   const api = serverURL;
   const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -423,6 +432,7 @@ export const postshoppinglisting = (entry: any) => {
   console.log(entry);
   const api = serverURL;
   const recipe = `${api}/shopping_list`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,
@@ -447,6 +457,7 @@ export const postshoppingrecipe = (shid:number, rid:number) => {
   console.log(shid + " " + rid);
   const api = serverURL;
   const recipe = `${api}/shopping_list_recipe`;
+  const jwttext = "" + localStorage.getItem("jwt");
   return axios
     .post(
       `${recipe}`,

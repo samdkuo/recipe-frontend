@@ -14,6 +14,9 @@ import {
   Checkbox,
   SelectChangeEvent,
   Select,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { useModalState } from "../../hooks";
 import {
@@ -250,78 +253,70 @@ export function RecipeCard({
                 {`${title}`}
               </Typography>
               <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 0px" }}>
-                {!isrecipelist ?
-                  <>
-                    <Button
-                      style={{
-                        height: 40,
-                        width: 200,
-                        // position: "sticky",
-                        // left: "0%",
-                        // width: "20%",
-                        // height: "5%",
-                        backgroundColor: "#67c4fc",
-                        color: "white",
-                      }}
-                      onClick={buttonHandler}
-                    >
-                      Update
-                    </Button>
-
-                    <Button
-                      style={{
-                        width: 200,
-                        height: 40,
-                        // position: "sticky",
-                        // width: "20%",
-                        // height: "5%",
-                        // left: "30%",
-                        backgroundColor: "#67c4fc",
-                        color: "white",
-                      }}
-                      onClick={() => {
-                        handleClick(id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </>
-                  :
-                  null}
                 {localStorage.getItem("jwt") ?
-                  <TextField
-                    name="shopping_list"
-                    id="shopping_list"
-                    label="Shopping Lists"
-                    select
-                    style={{
-                      // height: 40,
-                      width: 200,
-                      backgroundColor: "#67c4fc",
-                      color: "white",
-                      overflow: "hidden",
+                  <>{!isrecipelist ?
+                    <>
+                      <Button
+                        style={{
+                          height: 40,
+                          width: 200,
+                          // position: "sticky",
+                          // left: "0%",
+                          // width: "20%",
+                          // height: "5%",
+                          backgroundColor: "#67c4fc",
+                          color: "white",
+                        }}
+                        onClick={buttonHandler}
+                      >
+                        Update
+                      </Button>
 
-                    }}
-                  >
-                    <MenuItem>
-                      <TextField
-                        name="new_list"
-                        id="new_list"
-                        variant="outlined"
-                        label="New_list"
-                        value={liststr}
-                        onChange={updatestr}
-                        onKeyDown={handleKeyDown}
-                      />
-                    </MenuItem>
-                    {shopping_lists.map((label) => (
-                      <MenuItem key={label.id} value={label.id}>
-                        <Checkbox checked={isFound(label.id)}
-                          onChange={() => { addtoList(label.id) }} />
-                        {label.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                      <Button
+                        style={{
+                          width: 200,
+                          height: 40,
+                          // position: "sticky",
+                          // width: "20%",
+                          // height: "5%",
+                          // left: "30%",
+                          backgroundColor: "#67c4fc",
+                          color: "white",
+                        }}
+                        onClick={() => {
+                          handleClick(id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                    :
+                    null}
+                    <div>
+                      <FormControl>
+                        <InputLabel id="shoppinglist-label">Shopping List</InputLabel>
+                        <Select
+                          name="shopping_list"
+                          id="shopping_list"
+                          label="Shopping Lists"
+                          style={{
+                            // height: 40,
+                            width: 200,
+                            backgroundColor: "#67c4fc",
+                            color: "white",
+                            overflow: "hidden",
+                          }}
+                        >
+                          {shopping_lists.map((label) => (
+                            <MenuItem key={label.id} value={label.id}>
+                              <Checkbox checked={isFound(label.id)}
+                                onChange={() => { addtoList(label.id); }} />
+                              {label.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </div></>
                   : null
                 }
               </div>

@@ -62,8 +62,6 @@ const Home = () => {
       }
       return item;
     });
-    const clear = shopping_lists.filter((item) => item.id <= 0);
-    setshopping_lists(clear);
     console.log(newState);
     setshopping_lists(newState);
   },

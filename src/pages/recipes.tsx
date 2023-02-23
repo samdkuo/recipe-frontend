@@ -58,14 +58,14 @@ interface Image {
   image_url: string;
 }
 
-const Home = () => {
+const Home = (props: { location: { state: any; }; }) => {
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
   const [value, setValue] = React.useState("");
   const [searchData, setSearchData] = React.useState(recipes);
-  const [searchtype, setsearchtype] = React.useState("byname");
+  const [searchtype, setsearchtype] = React.useState(props.location.state || "byname");
   const { small, medium } = useWindowDimensionsQuery();
   const { visible, onClose, onOpen } = useModalState();
-  const [labelval, setLabel] = React.useState("");
+  const [labelval, setLabel] = React.useState(props.location.state || "");
 
   React.useEffect(() => {
     fetchrecipeimage().then((images: Image[]) => {
@@ -173,6 +173,8 @@ const Home = () => {
 
   const choosesearch = (event: SelectChangeEvent) => {
     setsearchtype(event.target.value as string);
+    setValue("");
+    searchItem("");
   };
   const searchItem = (query: any) => {
     if (query !== "" && query.length > 2) {

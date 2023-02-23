@@ -4,9 +4,16 @@ import { Chip, TextField, Grid, Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
+  const [state, setState] = useState({
+    searchtype: "bylabel",
+    labelval: "lunch"
+  });
   const history = useHistory();
   const handleClick = () => {
-    let path = `Recipes`;
+    let path = {
+      pathname: 'Recipes',
+      state
+    };
     console.log(localStorage.getItem("jwt"));
     history.push(path);
   };

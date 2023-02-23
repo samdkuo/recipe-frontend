@@ -16,7 +16,7 @@ export function IngredientInput({
     };
   }, []);
   const [ingredient, setIngredient] = useState(initialValues);
-  const units = ["tsp", "tbsp", "c", "fl oz", "gal", "pt", "qt"];
+  const units = ["tsp", "tbsp", "cup", "fl oz", "gal", "pt", "qt"];
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

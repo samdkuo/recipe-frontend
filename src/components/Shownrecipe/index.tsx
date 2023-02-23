@@ -69,11 +69,18 @@ export function Shownrecipe(
 
 
   const updateName = (updatedname: string) => {
-    console.log(updatedname);
+    console.log(id + " " + updatedname);
     updateShoppinglist(updatedname, id).then((response: any) => {
       if (response) {
+        console.log(response);
         handleUpdate(id, updatedname);
+        handlepress();
+        setname("");
       }
+
+      handleUpdate(id, updatedname);
+      handlepress();
+      setname("");
     })
   }
 
