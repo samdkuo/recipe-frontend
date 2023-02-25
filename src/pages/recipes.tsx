@@ -71,20 +71,40 @@ const Home = (props: { location: { state: any; }; }) => {
     fetchrecipeimage().then((images: Image[]) => {
       if (images) {
         console.log(images);
-        fetchRecipeEntries().then((response: Recipe[]) => {
-          if (response) {
-            for (let i = 0; i < response.length; i++) {
-              response[i].image = configData.default_image;
-              for (let j = 0; j < images.length; j++) {
-                if (response[i].id == images[j].recipe_id) {
-                  response[i].image = images[j].image_url;
+        if ((labelval != "" && labelval != "All")) {
+          console.log(labelval);
+          searchLabels(labelval.labelval).then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
                 }
               }
+              console.log(response);
+              setRecipes(response);
             }
-            console.log(response);
-            setRecipes(response);
-          }
-        });
+          });
+          setLabel(labelval.labelval);
+          setsearchtype("bylabel");
+        } else {
+          fetchRecipeEntries().then((response: Recipe[]) => {
+            if (response) {
+              for (let i = 0; i < response.length; i++) {
+                response[i].image = configData.default_image;
+                for (let j = 0; j < images.length; j++) {
+                  if (response[i].id == images[j].recipe_id) {
+                    response[i].image = images[j].image_url;
+                  }
+                }
+              }
+              console.log(response);
+              setRecipes(response);
+            }
+          });
+        }
       }
     });
   }, []);
@@ -275,6 +295,7 @@ const Home = (props: { location: { state: any; }; }) => {
 
   const searchLabel = (selectlabel: string) => {
     if (selectlabel !== "") {
+      console.log("selected label is " + selectlabel);
       fetchrecipeimage().then((images: Image[]) => {
         if (images) {
           console.log(images);

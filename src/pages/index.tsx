@@ -6,16 +6,25 @@ import { useHistory } from "react-router-dom";
 const Home = () => {
   const [state, setState] = useState({
     searchtype: "bylabel",
-    labelval: "lunch"
+    labelval: "3"
   });
+  let labels = [
+    { name: "All", value: 0 },
+    { name: "Breakfast", value: 1 },
+    { name: "Lunch", value: 2 },
+    { name: "Dinner", value: 3 },
+  ]
+
   const history = useHistory();
-  const handleClick = () => {
+  const handleClick = (label: number) => {
+    let chose = labels[label] + "";
+    console.log(state.searchtype);
+    console.log(labels[label]);
     let path = {
       pathname: 'Recipes',
       state
     };
-    console.log(localStorage.getItem("jwt"));
-    history.push(path);
+    handleLogin(path);
   };
 
   const handlesearch = (name: string) => {
@@ -23,8 +32,7 @@ const Home = () => {
     history.push(path);
   }
 
-  const handleLogin = () => {
-    let path = `Login`;
+  const handleLogin = (path: any) => {
     history.push(path);
   };
 
@@ -60,14 +68,11 @@ const Home = () => {
         style={{ width: "100%", marginBottom: 20 }}
       />
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {[
-          "All",
-          "Breakfast",
-          "Lunch",
-          "Dinner"
-        ].map((category, index) => (
+        {labels.map((labels, value) => (
           <Grid item>
-            <Chip style={{ minWidth: 115 }} label={category} onClick={handleClick} />
+            <Chip style={{ minWidth: 115 }} label={labels.name} onClick={() => {
+              handleClick(labels.value);
+            }} />
           </Grid>
         ))}
       </Grid>
