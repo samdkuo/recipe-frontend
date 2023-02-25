@@ -65,15 +65,15 @@ const Home = (props: { location: { state: any; }; }) => {
   const [searchtype, setsearchtype] = React.useState(props.location.state || "byname");
   const { small, medium } = useWindowDimensionsQuery();
   const { visible, onClose, onOpen } = useModalState();
-  const [labelval, setLabel] = React.useState(props.location.state || "");
+  const [labelval, setLabel] = React.useState(props.location.state.labelval || "0");
 
   React.useEffect(() => {
     fetchrecipeimage().then((images: Image[]) => {
       if (images) {
         console.log(images);
-        if ((labelval != "" && labelval != "All")) {
+        if ((labelval != "" && labelval != "0")) {
           console.log(labelval);
-          searchLabels(labelval.labelval).then((response: Recipe[]) => {
+          searchLabels(labelval).then((response: Recipe[]) => {
             if (response) {
               for (let i = 0; i < response.length; i++) {
                 response[i].image = configData.default_image;
@@ -87,7 +87,7 @@ const Home = (props: { location: { state: any; }; }) => {
               setRecipes(response);
             }
           });
-          setLabel(labelval.labelval);
+          setLabel(labelval);
           setsearchtype("bylabel");
         } else {
           fetchRecipeEntries().then((response: Recipe[]) => {

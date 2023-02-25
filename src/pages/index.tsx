@@ -4,25 +4,24 @@ import { Chip, TextField, Grid, Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
-  const [state, setState] = useState({
-    searchtype: "bylabel",
-    labelval: "3"
-  });
   let labels = [
-    { name: "All", value: 0 },
-    { name: "Breakfast", value: 1 },
-    { name: "Lunch", value: 2 },
-    { name: "Dinner", value: 3 },
+    { name: "All", value: "0", index: 0 },
+    { name: "Breakfast", value: "1", index: 1 },
+    { name: "Lunch", value: "2", index: 2 },
+    { name: "Dinner", value: "3", index: 3 },
   ]
 
   const history = useHistory();
-  const handleClick = (label: number) => {
-    let chose = labels[label] + "";
-    console.log(state.searchtype);
-    console.log(labels[label]);
+  const handleClick = (index: number) => {
+    console.log(labels[index]);
+    console.log("\"" + labels[index].value + "\"");
     let path = {
       pathname: 'Recipes',
-      state
+
+      state: {
+        searchtype: "bylabel",
+        labelval: labels[index].value
+      }
     };
     handleLogin(path);
   };
@@ -68,10 +67,10 @@ const Home = () => {
         style={{ width: "100%", marginBottom: 20 }}
       />
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {labels.map((labels, value) => (
+        {labels.map((labels, index) => (
           <Grid item>
             <Chip style={{ minWidth: 115 }} label={labels.name} onClick={() => {
-              handleClick(labels.value);
+              handleClick(labels.index);
             }} />
           </Grid>
         ))}
