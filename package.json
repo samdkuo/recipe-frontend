@@ -37,6 +37,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-routes-loader": "^0.2.1",
     "react-scripts": "5.0.1",
+    "react-test-renderer": "^18.2.0",
     "semantic-ui-css": "git+https://github.com/Semantic-Org/Semantic-UI-CSS.git",
     "semantic-ui-react": "^2.1.2",
     "typescript": "^4.6.4",
