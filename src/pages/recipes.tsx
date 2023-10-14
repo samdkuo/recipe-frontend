@@ -58,7 +58,7 @@ interface Image {
   image_url: string;
 }
 
-const Home = (props: { location: { state: any; }; }) => {
+const RecipePage = (props: { location: { state: any; }; }) => {
   console.log(props);
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
   const [value, setValue] = React.useState("");
@@ -66,7 +66,7 @@ const Home = (props: { location: { state: any; }; }) => {
   const [searchtype, setsearchtype] = React.useState(props.location.state || "byname");
   const { small, medium } = useWindowDimensionsQuery();
   const { visible, onClose, onOpen } = useModalState();
-  const [labelval, setLabel] = React.useState(props.location.state.labelval || "0");
+  const [labelval, setLabel] = React.useState(props.location.state ?? "0");
 
   React.useEffect(() => {
     fetchrecipeimage().then((images: Image[]) => {
@@ -483,4 +483,4 @@ const Home = (props: { location: { state: any; }; }) => {
   );
 };
 
-export default Home;
+export default RecipePage;
