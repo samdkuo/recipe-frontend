@@ -59,6 +59,7 @@ interface Image {
 }
 
 const Home = (props: { location: { state: any; }; }) => {
+  console.log(props);
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
   const [value, setValue] = React.useState("");
   const [searchData, setSearchData] = React.useState(recipes);
